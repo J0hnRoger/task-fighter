@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskSamurai.Cli", "TaskSamurai.Cli\TaskSamurai.Cli.csproj", "{0A20400B-6615-4106-80F5-14CCB476E3D5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskSamurai.Tests", "TaskSamurai.Tests\TaskSamurai.Tests.csproj", "{47432BDC-9886-49FA-B16E-115D921E730B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskSamurai.Worker", "TaskSamurai.Worker\TaskSamurai.Worker.csproj", "{BB2509F2-278A-4A7F-9EAC-63747CF589BA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0A20400B-6615-4106-80F5-14CCB476E3D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A20400B-6615-4106-80F5-14CCB476E3D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A20400B-6615-4106-80F5-14CCB476E3D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A20400B-6615-4106-80F5-14CCB476E3D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47432BDC-9886-49FA-B16E-115D921E730B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47432BDC-9886-49FA-B16E-115D921E730B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47432BDC-9886-49FA-B16E-115D921E730B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47432BDC-9886-49FA-B16E-115D921E730B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB2509F2-278A-4A7F-9EAC-63747CF589BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB2509F2-278A-4A7F-9EAC-63747CF589BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB2509F2-278A-4A7F-9EAC-63747CF589BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB2509F2-278A-4A7F-9EAC-63747CF589BA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

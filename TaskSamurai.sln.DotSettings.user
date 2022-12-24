@@ -1,0 +1,23 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=23d6e03c_002Df271_002D4f4e_002Da369_002D2cf3abc68475/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="TimeBlock_ReturnTheDuration" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::47432BDC-9886-49FA-B16E-115D921E730B::net6.0::TaskFighter.Tests.TimeBlockTests.TimeBlock_ReturnTheDuration&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=9c6b66cd_002D9f44_002D427a_002Db93b_002D557817c3da2c/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="TimeBlock_ReturnTheDuration #3" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::47432BDC-9886-49FA-B16E-115D921E730B::net6.0::TaskFighter.Tests.TimeBlockTests.TimeBlock_ReturnTheDuration&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::47432BDC-9886-49FA-B16E-115D921E730B::net6.0::TaskFighter.Tests.SoundManagerTests.SoundManager_PlaySound&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::47432BDC-9886-49FA-B16E-115D921E730B::net6.0::TaskFighter.Tests.DayScheduleTests.DaySchedule_ContainsTimeBlocks&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::47432BDC-9886-49FA-B16E-115D921E730B::net6.0::TaskFighter.Tests.TaskFighterTests.TaskFighter_WorkDay_Tests&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=cf140de0_002D5fff_002D45f9_002Db1d3_002Dd06416d68e7c/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="TimeBlock_ReturnTheDuration #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::47432BDC-9886-49FA-B16E-115D921E730B::net6.0::TaskFighter.Tests.TimeBlockTests.TimeBlock_ReturnTheDuration&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::47432BDC-9886-49FA-B16E-115D921E730B::net6.0::TaskFighter.Tests.SoundManagerTests.SoundManager_PlaySound&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::47432BDC-9886-49FA-B16E-115D921E730B::net6.0::TaskFighter.Tests.TaskFighterTests.TaskFighter_WorkDay_Tests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::47432BDC-9886-49FA-B16E-115D921E730B::net6.0::TaskFighter.Tests.TaskFighterTests&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	</wpf:ResourceDictionary>
