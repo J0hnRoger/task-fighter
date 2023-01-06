@@ -18,6 +18,16 @@
     &lt;TestId&gt;xUnit::47432BDC-9886-49FA-B16E-115D921E730B::net6.0::TaskFighter.Tests.SoundManagerTests.SoundManager_PlaySound&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::47432BDC-9886-49FA-B16E-115D921E730B::net6.0::TaskFighter.Tests.TaskFighterTests.TaskFighter_WorkDay_Tests&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::47432BDC-9886-49FA-B16E-115D921E730B::net6.0::TaskFighter.Tests.TaskFighterTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::47432BDC-9886-49FA-B16E-115D921E730B::net6.0::TaskFighter.Tests.CommandLineParserTests.CommandLine_ParseTasksCommand&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::47432BDC-9886-49FA-B16E-115D921E730B::net6.0::TaskFighter.Tests.TasksCommandTests.CreateTask_CreateTask_WithMinimalMandatoryProperties&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::47432BDC-9886-49FA-B16E-115D921E730B::net6.0::TaskFighter.Tests.TodoTaskTests.TodoTask_ReturnAge_FromCreated&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::47432BDC-9886-49FA-B16E-115D921E730B::net6.0::TaskFighter.Tests.CommandLineParserTests.ParsingRegex_ParseThreeParts&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::47432BDC-9886-49FA-B16E-115D921E730B::net6.0::TaskFighter.Tests.CommandLineParserTests.ParsingRegex_ParseCommand_Without_Filters&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::47432BDC-9886-49FA-B16E-115D921E730B::net6.0::TaskFighter.Tests.CommandLineParserTests.ParsingRegex_ParseCommand_WithFilters&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::47432BDC-9886-49FA-B16E-115D921E730B::net6.0::TaskFighter.Tests.CommandLineParserTests.CommandParser_Parse_Without_Filters&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::47432BDC-9886-49FA-B16E-115D921E730B::net6.0::TaskFighter.Tests.CommandLineParserTests.CommandLineParser_ReturnNotFoundRequest_WhenUnknowArgs&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::47432BDC-9886-49FA-B16E-115D921E730B::net6.0::TaskFighter.Tests.CommandLineParserTests.CommandLineParser_ReturnTaskEntity&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::47432BDC-9886-49FA-B16E-115D921E730B::net6.0::TaskFighter.Tests.TasksCommandTests.ListTask_WithFilters_ReturnAdaptedView&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	</wpf:ResourceDictionary>

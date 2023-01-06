@@ -11,7 +11,8 @@ public class TimeInterval : ValueObject
     
     public override string ToString()
     {
-        return $"{StartTime} -> {EndTime}";
+        return $"|-- {StartTime} --| \r\n" +
+               $"|-- {EndTime} --|";
     }
 
     protected override IEnumerable<object> GetEqualityComponents()

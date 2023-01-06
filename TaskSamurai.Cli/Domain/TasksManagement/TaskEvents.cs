@@ -9,14 +9,14 @@ public static class TaskEvents
         return new TaskCreatedEvent(task, DateTime.Now);
     }
 
+    public static BaseEvent<Entity> DeleteTaskEvent(TodoTask task)
+    {
+        return new TaskDeletedEvent(task, DateTime.Now);
+    }
+    
     public static TaskUpdatedEvent UpdateTaskEvent(TodoTask task)
     {
         return new TaskUpdatedEvent(task, DateTime.Now);
-    }
-
-    public static TaskDeletedEvent DeleteTaskEvent(TodoTask task)
-    {
-        return new TaskDeletedEvent(task, DateTime.Now);
     }
 
     public static TaskStartedEvent StartTaskEvent(TodoTask task)
@@ -50,7 +50,7 @@ public class TaskCreatedEvent : BaseEvent<Entity>
     public TaskCreatedEvent(TodoTask ritual, DateTime created) : base("CreateTaskEvent", created, ritual) { }
 }
 
-public class TaskDeletedEvent : BaseEvent<TodoTask>
+public class TaskDeletedEvent : BaseEvent<Entity>
 {
     public TodoTask Ritual { get; private set; }
 

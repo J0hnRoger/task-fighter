@@ -22,6 +22,7 @@ namespace TaskSamurai.Infrastructure.Renderer;
             _table.Border = TableBorder.Rounded;
 
             PropertyInfo[] properties = typeof(T).GetProperties();
+            
             foreach (PropertyInfo propertyInfo in properties)
             {
                 _table.AddColumn(new TableColumn($"[green]{propertyInfo.Name}[/]").LeftAligned());

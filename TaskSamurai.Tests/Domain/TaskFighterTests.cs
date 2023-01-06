@@ -56,19 +56,8 @@ public class TaskFighterTests
     public void TaskFighter_Tasks_Tests()
     {
         // Daily Template with TimeBlocks 
-        string configDir = TestConfiguration.GetSecretValue("ConfigPath");
+        SamuraiTasksContext samuraiTasksContext = TestHelpers.CreateTestContext();
         
-        TaskSamuraiConfig config = new TaskSamuraiConfig()
-        {
-           CurrentIndex = 0,
-           ConfigPath = configDir + "test.config.json",
-           TodosPath =  configDir + "tasks.json", 
-           CalendarPath =  configDir + "calendar.json", 
-           LoggerPath = configDir + "database.json",
-           Context = "test"
-        };
-        
-        SamuraiTasksContext samuraiTasksContext = new SamuraiTasksContext(config);
         samuraiTasksContext.AddTask(new TodoTask() { Name = "Test Tasks" });
         samuraiTasksContext.AddTask(new TodoTask() { Name = "Test Tasks 2" });
         samuraiTasksContext.SaveChanges();
@@ -130,7 +119,6 @@ public class TaskFighterTests
         context.EndDay(todayWork);
         */
     }
-    
     
     [Fact]
     public void TaskFighter_Events_Tests()
@@ -215,7 +203,6 @@ public class TaskFighterTests
     [Fact]
     public void TaskFighter_Rituals_Tests()
     {
-
         string configDir = TestConfiguration.GetSecretValue("ConfigPath");
         
         TaskSamuraiConfig config = new TaskSamuraiConfig()

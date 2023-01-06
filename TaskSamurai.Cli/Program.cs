@@ -2,9 +2,14 @@
 using Spectre.Console;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
+using TaskSamurai.Domain;
 using TaskSamurai.Domain.DayScheduling;
-using TaskSamurai.Domain.DayScheduling.Commands;
+using TaskSamurai.Domain.DayScheduling.Requests;
+using TaskSamurai.Domain.TasksManagement;
+using TaskSamurai.Domain.TasksManagement.Commands;
 using TaskSamurai.Infrastructure;
+using TaskSamurai.Infrastructure.Persistence;
 using TaskSamurai.Infrastructure.Renderer;
 
 AnsiConsole.MarkupLine("[underline red]It's a good day to be the GOAT[/]");
@@ -15,29 +20,67 @@ var builder = ConfigureServices();
 
 ServiceProvider ConfigureServices()
 {
+    string configPath = configuration["ConfigPath"];
+    string configContent = File.ReadAllText(configPath);
+    TaskSamuraiConfig config = JsonConvert.DeserializeObject<TaskSamuraiConfig>(configContent);
+    
+    var allDomainRequestTypes = typeof(CommandParser)
+        .Assembly
+        .GetTypes()
+        .Where(t => t.GetInterfaces().Contains(typeof(IBaseRequest)))
+        .ToList();
+    
     return new ServiceCollection()
-        .AddSingleton<CommandParser>()
-        .AddMediatR(typeof(GenerateDayScheduleCommandHandler))
+        .AddSingleton<IConfigurationRoot>(p => configuration)
+        .AddSingleton(p =>  new CommandParser(allDomainRequestTypes))
+        .AddSingleton<ISamuraiTaskContext>(prodiver => new SamuraiTasksContext(config))
+        .AddMediatR(typeof(ShowConfigRequestHandler ))
         .BuildServiceProvider();
 }
 
 CommandParser commandParser = builder.GetRequiredService<CommandParser>();
 
-var command = commandParser.ParseArgs(Environment.GetCommandLineArgs());
+string commandStr = String.Join(" ", args);
+var command = commandParser.ParseArgs(commandStr);
 
 ISender _mediator =  builder.GetService<ISender>();
 
-if (command is GenerateDayScheduleCommand)
+if (command is NotFoundRequest)
 {
-    var result = await _mediator.Send(new GenerateDayScheduleCommand(){ CurrentDay = DateTime.Now });
+   AnsiConsole.MarkupLine($"[red bold]Commande inconnue: {commandStr}[/]");
+   return;
+}
+
+// if (command is AddTaskRequest createTaskCommand)
+// {
+//     var result = await _mediator.Send(createTaskCommand);
+//     AnsiConsole.WriteLine($"Task created {result.Id} - {result.Name}");
+// }
+
+if (command is ListTaskRequest listTasksCommand)
+{
+    var result = await _mediator.Send(listTasksCommand);
+    TaskFighterTable<TodoTask> table = new TaskFighterTable<TodoTask>(result);
+    AnsiConsole.Write(table.Table);
+}
+
+if (command is GenerateDayScheduleRequest)
+{
+    var result = await _mediator.Send(new GenerateDayScheduleRequest(){ CurrentDay = DateTime.Now });
     // Persist day on the DB.json
     TaskFighterTable<TimeBlock> table = new TaskFighterTable<TimeBlock>(result.TimeBlocks.ToList());
-    AnsiConsole.Render(table.Table);
-    if (!AnsiConsole.Confirm("On envoit la poudre?"))
+    foreach (var tb in result.TimeBlocks)
+    {
+        AnsiConsole.WriteLine(tb.Interval.ToString());
+    }
+    if (!AnsiConsole.Confirm("Fais parler la poudre?"))
     {
         result.StartDay(DateTime.Now);
     }
 }
+
+var commandResult = await _mediator.Send(command);
+AnsiConsole.WriteLine($"{command} - {commandResult}");
 
 /// <summary>
 /// Récupération des données de configuration
@@ -49,17 +92,3 @@ static IConfigurationRoot GetConfiguration()
         .AddUserSecrets<Program>()
         .Build();
 }
-
-DaySchedule dayWork = new DaySchedule();
-dayWork.TimeBlocks.Add(new TimeBlock()
-{
-    Interval = new TimeInterval()
-    {
-        StartTime = new Time(DateTime.Now.Hour, DateTime.Now.Minute - 1),
-        EndTime = new Time(DateTime.Now.Hour, DateTime.Now.Minute + 1),
-    }
-});
-dayWork.OnTimeBlockEnd += block => AnsiConsole.WriteLine(block.Interval.ToString() + " finished");
-// Craft your day
-dayWork.StartDay(DateTime.Now);
-Console.ReadLine();

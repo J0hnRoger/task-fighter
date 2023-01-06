@@ -23,6 +23,11 @@ public class Time : ValueObject
         Minutes = minutes;
     }
 
+    public override string ToString()
+    {
+        return $"{(Hour < 10 ? ("0" + Hour) : Hour)}:{(Minutes < 10 ? ("0" + Minutes) : Minutes)} ";
+    }
+
     protected override IEnumerable<object> GetEqualityComponents()
     {
         yield return Hour;
