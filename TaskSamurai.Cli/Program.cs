@@ -51,12 +51,6 @@ if (command is NotFoundRequest)
    return;
 }
 
-// if (command is AddTaskRequest createTaskCommand)
-// {
-//     var result = await _mediator.Send(createTaskCommand);
-//     AnsiConsole.WriteLine($"Task created {result.Id} - {result.Name}");
-// }
-
 if (command is ListTaskRequest listTasksCommand)
 {
     var result = await _mediator.Send(listTasksCommand);

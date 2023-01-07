@@ -42,7 +42,8 @@ public class CreateTaskCommandHandler : IRequestHandler<AddTaskRequest, TodoTask
         var task = new TodoTask()
         {
             Name = request.Name,
-            Area = request.Area
+            Area = request.Area,
+            Context =  request.Context
         };
 
         _context.AddTask(task);
