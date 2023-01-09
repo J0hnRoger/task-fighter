@@ -31,12 +31,13 @@ public class TasksCommandTests
             , CancellationToken.None);
 
         var startTaskHandler = new StartTaskRequestHandler(samuraiTasksContext);
-        var startResult = startTaskHandler.Handle(new StartTaskRequest("", "1"), CancellationToken.None); 
+        var startResult = await startTaskHandler.Handle(new StartTaskRequest("", result.Id.ToString()), CancellationToken.None); 
         
         var endTaskHandler = new FinishTaskRequestHandler(samuraiTasksContext);
-        var endResult = endTaskHandler.Handle(new FinishTaskRequest("", "1"), CancellationToken.None); 
+        var endResult = await endTaskHandler.Handle(new FinishTaskRequest("", result.Id.ToString()), CancellationToken.None); 
         
-        result.Id.Should().BeGreaterThan(0);
+        result.Id.Should().Be(1);
+        result.Status.Should().Be(TodoTaskStatus.Complete);
     }
 
     [Fact]

@@ -51,7 +51,6 @@ public class SamuraiTasksContext : ISamuraiTaskContext
         _dbConfig.Context = context.ToLower();
     }
 
-
     public Ritual AddRitual(Ritual newRitual)
     {
         newRitual.Id = ++_dbConfig.CurrentIndex;

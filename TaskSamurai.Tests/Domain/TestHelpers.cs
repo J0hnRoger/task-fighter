@@ -1,4 +1,6 @@
-﻿using TaskSamurai.Domain;
+﻿using System.IO;
+using Newtonsoft.Json;
+using TaskSamurai.Domain;
 using TaskSamurai.Infrastructure.Persistence;
 
 namespace TaskFighter.Tests;
@@ -7,20 +9,20 @@ public class TestHelpers
 {
     public static SamuraiTasksContext CreateTestContext()
     {
-        string configDir = TestConfiguration.GetSecretValue("ConfigPath");
+        string configPath = TestConfiguration.GetSecretValue("ConfigPath");
+
+        string configContent = File.ReadAllText(configPath);
+        TaskSamuraiConfig config = JsonConvert.DeserializeObject<TaskSamuraiConfig>(configContent);
         
-        TaskSamuraiConfig config = new TaskSamuraiConfig()
-        {
-           CurrentIndex = 0,
-           ConfigPath = configDir + "test.config.json",
-           TodosPath =  configDir + "test.tasks.json", 
-           RitualsPath =  configDir + "test.rituals.json", 
-           CalendarPath =  configDir + "test.calendar.json", 
-           LoggerPath = configDir + "test.database.json",
-           Context = "test"
-        };
-        
+        // CleanUp 
+        config.CurrentIndex = 0;
+        File.WriteAllText(config.TodosPath,"[]");
+        File.WriteAllText(config.RitualsPath,"[]" );
+        File.WriteAllText(config.CalendarPath,"[]"  );
+        File.WriteAllText(config.LoggerPath,"[]");
+
         SamuraiTasksContext samuraiTasksContext = new SamuraiTasksContext(config);
+        
         return samuraiTasksContext;
     }
 }

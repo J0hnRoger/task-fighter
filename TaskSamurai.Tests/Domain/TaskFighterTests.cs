@@ -142,7 +142,7 @@ public class TaskFighterTests
         
         samuraiTasksContext.SaveChanges();
        
-        // tf add task c:perso Dev' the apps
+        // tf add task Dev' the apps c:perso 
         // tf add task c:perso Nettoyer le poêle
         // tf add task c:perso Nettoyer le poêle
         
