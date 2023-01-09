@@ -31,45 +31,45 @@ public static class RitualEvents
 
 public class RitualCreatedEvent : BaseEvent<Entity>
 {
-    public RitualCreatedEvent(Ritual ritual, DateTime created) : base("CreateRitualEvent", created, ritual) { }
+    public RitualCreatedEvent(Ritual task, DateTime created) : base("CreateRitualEvent", created, task) { }
 }
 
 public class RitualDeletedEvent : BaseEvent<Ritual>
 {
-    public Ritual Ritual { get; private set; }
+    public Ritual Task { get; private set; }
 
-    public RitualDeletedEvent(Ritual ritual, DateTime created) : base("RemoveRitualEvent", created, ritual)
+    public RitualDeletedEvent(Ritual task, DateTime created) : base("RemoveRitualEvent", created, task)
     {
-        Ritual = ritual;
+        Task = task;
     }
 }
 
 public class RitualUpdatedEvent : BaseEvent<Ritual>
 {
-    public Ritual Ritual { get; private set; }
+    public Ritual Task { get; private set; }
 
-    public RitualUpdatedEvent(Ritual ritual, DateTime created) : base("RemoveRitualEvent", created, ritual)
+    public RitualUpdatedEvent(Ritual task, DateTime created) : base("RemoveRitualEvent", created, task)
     {
-        Ritual = ritual;
+        Task = task;
     }
 }
 
 public class RitualAppliedEvent : BaseEvent<Ritual>
 {
-    public Ritual Ritual { get; private set; }
+    public Ritual Task { get; private set; }
 
-    public RitualAppliedEvent (Ritual ritual, DateTime created) : base("RitualAppliedEvent", created, ritual)
+    public RitualAppliedEvent (Ritual task, DateTime created) : base("RitualAppliedEvent", created, task)
     {
-        Ritual = ritual;
+        Task = task;
     }
 }
 
 public class RitualCompletedEvent : BaseEvent<Ritual>
 {
-    public Ritual Ritual { get; private set; }
+    public Ritual Task { get; private set; }
 
-    public RitualCompletedEvent(Ritual ritual, DateTime created) : base("RemoveRitualEvent", created, ritual)
+    public RitualCompletedEvent(Ritual task, DateTime created) : base("RemoveRitualEvent", created, task)
     {
-        Ritual = ritual;
+        Task = task;
     }
 }

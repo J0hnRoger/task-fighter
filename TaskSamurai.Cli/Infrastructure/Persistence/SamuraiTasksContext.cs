@@ -70,6 +70,12 @@ public class SamuraiTasksContext : ISamuraiTaskContext
         return newTodoEvent;
     }
 
+    public TodoTask GetTask(int taskId)
+    {
+        var task = _tasks.FirstOrDefault(t => t.Id == taskId);
+        return task;
+    }
+
     public TodoTask AddTask(TodoTask newTask)
     {
         newTask.Id = ++_dbConfig.CurrentIndex;
@@ -93,7 +99,8 @@ public class SamuraiTasksContext : ISamuraiTaskContext
 
     public void Update(TodoTask task)
     {
-        throw new NotImplementedException();
+        _domainEvents.AddRange(task.DomainEvents);
+        task.ClearDomainEvents();
     }
 
     public void Delete(TodoTask task)
@@ -128,7 +135,7 @@ public class SamuraiTasksContext : ISamuraiTaskContext
 
     private void SaveChanges(string filePath)
     {
-        File.WriteAllText(filePath, JsonConvert.SerializeObject(_tasks));
+        File.WriteAllText(filePath, JsonConvert.SerializeObject(_tasks, Formatting.Indented));
     }
 
     public void BackUp()

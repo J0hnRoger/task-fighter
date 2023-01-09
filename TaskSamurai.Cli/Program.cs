@@ -67,6 +67,7 @@ if (command is GenerateDayScheduleRequest)
     {
         AnsiConsole.WriteLine(tb.Interval.ToString());
     }
+    
     if (!AnsiConsole.Confirm("Fais parler la poudre?"))
     {
         result.StartDay(DateTime.Now);

@@ -1,4 +1,6 @@
 ﻿using MediatR;
+using Spectre.Console;
+using TaskSamurai.Infrastructure.Persistence;
 
 namespace TaskSamurai.Domain.TasksManagement.Commands;
 
@@ -43,7 +45,8 @@ public class CreateTaskCommandHandler : IRequestHandler<AddTaskRequest, TodoTask
         {
             Name = request.Name,
             Area = request.Area,
-            Context =  request.Context
+            Context =  request.Context,
+            Status = TodoTaskStatus.BackLog
         };
 
         _context.AddTask(task);

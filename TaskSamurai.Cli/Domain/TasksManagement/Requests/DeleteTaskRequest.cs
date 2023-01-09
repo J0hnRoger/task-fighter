@@ -1,10 +1,9 @@
-﻿using System.Text.Json.Serialization.Metadata;
-using MediatR;
+﻿using MediatR;
 
 namespace TaskSamurai.Domain.TasksManagement.Commands;
 
 
-public record DeleteTaskRequest : IRequest<TodoTask> 
+public record DeleteTaskRequest : IRequest<Unit> 
 {
     public int TaskId  { get; set; }
     
@@ -19,7 +18,7 @@ public record DeleteTaskRequest : IRequest<TodoTask>
     }
 }
 
-public class DeleteTaskCommandHandler : IRequestHandler<DeleteTaskRequest, TodoTask>
+public class DeleteTaskCommandHandler : IRequestHandler<DeleteTaskRequest, Unit>
 {
     private readonly ISamuraiTaskContext _context;
 
@@ -28,10 +27,10 @@ public class DeleteTaskCommandHandler : IRequestHandler<DeleteTaskRequest, TodoT
         _context = context;
     }
     
-   public Task<TodoTask> Handle(DeleteTaskRequest request, CancellationToken cancellationToken)
+   public Task<Unit> Handle(DeleteTaskRequest request, CancellationToken cancellationToken)
    {
        _context.DeleteTask(request.TaskId);
        _context.SaveChanges();
-       return Task.FromResult(new TodoTask()); 
+       return Task.FromResult(new Unit()); 
    }
 }

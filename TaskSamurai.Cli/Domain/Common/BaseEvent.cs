@@ -9,11 +9,11 @@ public abstract class BaseEvent<T> : ISamuraiTaskEvent where T : Entity
     public string Type { get; private set; }
     public DateTime Created { get; }
 
-    protected BaseEvent(string type, DateTime created, T ritual)
+    protected BaseEvent(string type, DateTime created, T task)
     {
         Type = type;
         Created = created;
-        Entity = ritual;
-        EntityId = ritual.Id;
+        Entity = task;
+        EntityId = task.Id;
     }
 }

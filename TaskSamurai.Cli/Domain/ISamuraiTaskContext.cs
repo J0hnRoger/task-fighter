@@ -8,6 +8,7 @@ public interface ISamuraiTaskContext
     public IReadOnlyList<TodoTask> Tasks { get; }
     public IReadOnlyList<TodoEvent> Events { get; }
 
+    TodoTask GetTask(int requestTaskId);
     public TodoTask AddTask(TodoTask newTask);
 
     void DeleteTask(int taskId);

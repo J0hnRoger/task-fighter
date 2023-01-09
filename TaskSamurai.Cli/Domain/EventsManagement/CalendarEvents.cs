@@ -50,9 +50,9 @@ public class EventCreatedEvent : BaseEvent<Entity>
 {
     public TodoEvent Event { get; private set; }
 
-    public EventCreatedEvent(TodoEvent ritual, DateTime created) : base("CreateEventEvent", created, ritual)
+    public EventCreatedEvent(TodoEvent task, DateTime created) : base("CreateEventEvent", created, task)
     {
-        Event = ritual;
+        Event = task;
     }
 }
 
@@ -60,9 +60,9 @@ public class EventDeletedEvent : BaseEvent<TodoEvent>
 {
     public TodoEvent Event { get; private set; }
 
-    public EventDeletedEvent(TodoEvent ritual, DateTime created) : base("RemoveEventEvent", created, ritual)
+    public EventDeletedEvent(TodoEvent task, DateTime created) : base("RemoveEventEvent", created, task)
     {
-        Event = ritual;
+        Event = task;
     }
 }
 
@@ -70,9 +70,9 @@ public class EventUpdatedEvent : BaseEvent<TodoEvent>
 {
     public TodoEvent Event { get; private set; }
 
-    public EventUpdatedEvent(TodoEvent ritual, DateTime created) : base("RemoveEventEvent", created, ritual)
+    public EventUpdatedEvent(TodoEvent task, DateTime created) : base("RemoveEventEvent", created, task)
     {
-        Event = ritual;
+        Event = task;
     }
 }
 
@@ -80,9 +80,9 @@ public class EventStartedEvent : BaseEvent<TodoEvent>
 {
     public TodoEvent Event { get; private set; }
 
-    public EventStartedEvent(TodoEvent ritual, DateTime created) : base("RemoveEventEvent", created, ritual)
+    public EventStartedEvent(TodoEvent task, DateTime created) : base("RemoveEventEvent", created, task)
     {
-        Event = ritual;
+        Event = task;
     }
 }
 
@@ -90,9 +90,9 @@ public class EventStoppedEvent : BaseEvent<TodoEvent>
 {
     public TodoEvent Event { get; private set; }
 
-    public EventStoppedEvent(TodoEvent ritual, DateTime created) : base("RemoveEventEvent", created, ritual)
+    public EventStoppedEvent(TodoEvent task, DateTime created) : base("RemoveEventEvent", created, task)
     {
-        Event = ritual;
+        Event = task;
     }
 }
 
@@ -100,9 +100,9 @@ public class EventContinuedEvent : BaseEvent<TodoEvent>
 {
     public TodoEvent Event { get; private set; }
 
-    public EventContinuedEvent(TodoEvent ritual, DateTime created) : base("RemoveEventEvent", created, ritual)
+    public EventContinuedEvent(TodoEvent task, DateTime created) : base("RemoveEventEvent", created, task)
     {
-        Event = ritual;
+        Event = task;
     }
 }
 
@@ -110,9 +110,9 @@ public class EventMigrated : BaseEvent<TodoEvent>
 {
     public TodoEvent Event { get; private set; }
 
-    public EventMigrated(TodoEvent ritual, DateTime created) : base("RemoveEventEvent", created, ritual)
+    public EventMigrated(TodoEvent task, DateTime created) : base("RemoveEventEvent", created, task)
     {
-        Event = ritual;
+        Event = task;
     }
 }
 
@@ -120,8 +120,8 @@ public class EventCompletedEvent : BaseEvent<TodoEvent>
 {
     public TodoEvent Event { get; private set; }
 
-    public EventCompletedEvent(TodoEvent ritual, DateTime created) : base("RemoveEventEvent", created, ritual)
+    public EventCompletedEvent(TodoEvent task, DateTime created) : base("RemoveEventEvent", created, task)
     {
-        Event = ritual;
+        Event = task;
     }
 }

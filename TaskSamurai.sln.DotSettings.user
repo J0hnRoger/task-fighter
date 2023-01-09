@@ -10,6 +10,8 @@
     &lt;TestId&gt;xUnit::47432BDC-9886-49FA-B16E-115D921E730B::net6.0::TaskFighter.Tests.SoundManagerTests.SoundManager_PlaySound&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::47432BDC-9886-49FA-B16E-115D921E730B::net6.0::TaskFighter.Tests.DayScheduleTests.DaySchedule_ContainsTimeBlocks&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::47432BDC-9886-49FA-B16E-115D921E730B::net6.0::TaskFighter.Tests.TaskFighterTests.TaskFighter_WorkDay_Tests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::47432BDC-9886-49FA-B16E-115D921E730B::net6.0::TaskFighter.Tests.TasksCommandTests.FinishTask_CreateFinishTaskEvent&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::47432BDC-9886-49FA-B16E-115D921E730B::net6.0::TaskFighter.Tests.TodoTaskTests.TodoTask_ClearEvents_WhenUpdated&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=cf140de0_002D5fff_002D45f9_002Db1d3_002Dd06416d68e7c/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="TimeBlock_ReturnTheDuration #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
@@ -28,6 +30,7 @@
     &lt;TestId&gt;xUnit::47432BDC-9886-49FA-B16E-115D921E730B::net6.0::TaskFighter.Tests.CommandLineParserTests.CommandLineParser_ReturnNotFoundRequest_WhenUnknowArgs&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::47432BDC-9886-49FA-B16E-115D921E730B::net6.0::TaskFighter.Tests.CommandLineParserTests.CommandLineParser_ReturnTaskEntity&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::47432BDC-9886-49FA-B16E-115D921E730B::net6.0::TaskFighter.Tests.TasksCommandTests.ListTask_WithFilters_ReturnAdaptedView&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::47432BDC-9886-49FA-B16E-115D921E730B::net6.0::TaskFighter.Tests.TasksCommandTests.FinishTask_CreateFinishTaskEvent&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	</wpf:ResourceDictionary>

@@ -1,5 +1,6 @@
 ﻿using TaskSamurai.Domain.Common;
 using TaskSamurai.Domain.Common.Interfaces;
+using TaskSamurai.Infrastructure.Persistence;
 
 namespace TaskSamurai.Domain.TasksManagement;
 
@@ -22,7 +23,7 @@ public class TodoTask : Entity, ITableRenderable
     public List<string> Tags { get; set; }
     
     // Runtime Properties
-    public string Status { get; set; }
+    public TodoTaskStatus Status { get; set; }
     
     // Reporting Properties
     public int Difficulty { get; set; }
@@ -47,7 +48,7 @@ public class TodoTask : Entity, ITableRenderable
         {
             Id.ToString(),
             Name,
-            Status ?? "",
+            Status?.Value ?? TodoTaskStatus.BackLog.Value,
             Context,
             GetAge(DateTime.Now),
             Description ?? "",
@@ -60,5 +61,30 @@ public class TodoTask : Entity, ITableRenderable
             String.Join(',', Impact) ?? "",
             Difficulty.ToString()
         };
+    }
+
+    public void Finish(DateTime endDate)
+    {
+        if (Status != TodoTaskStatus.Active)
+            throw new Exception($"Asked task {Id} not active");
+        Status = TodoTaskStatus.Complete;
+        EndDate = endDate;
+        
+        _domainEvents.Add(new TaskCompletedEvent(this, endDate));
+    }
+
+    public void Start(DateTime startDate)
+    {
+        if (Status != TodoTaskStatus.BackLog)
+            throw new Exception($"Asked task {Id} not in backlog");
+        Status = TodoTaskStatus.Active;
+        StartDate = startDate;
+        
+        _domainEvents.Add(new TaskStartedEvent(this, startDate));
+    }
+
+    public override string ToString()
+    {
+        return $"{Id} - {Name} - {Status}";
     }
 }

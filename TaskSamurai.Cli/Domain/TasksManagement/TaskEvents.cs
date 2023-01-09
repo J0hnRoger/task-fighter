@@ -14,6 +14,11 @@ public static class TaskEvents
         return new TaskDeletedEvent(task, DateTime.Now);
     }
     
+    public static BaseEvent<Entity> EndTaskEvent(TodoTask task)
+    {
+        return new TaskCompletedEvent(task, DateTime.Now);
+    }
+
     public static TaskUpdatedEvent UpdateTaskEvent(TodoTask task)
     {
         return new TaskUpdatedEvent(task, DateTime.Now);
@@ -34,11 +39,6 @@ public static class TaskEvents
         return new TaskContinuedEvent(task, DateTime.Now);
     }
 
-    public static TaskCompletedEvent EndTaskEvent(TodoTask task)
-    {
-        return new TaskCompletedEvent(task, DateTime.Now);
-    }
-
     public static TaskMigrated MigrateTaskEvent(TodoTask task)
     {
         return new TaskMigrated(task, DateTime.Now);
@@ -47,75 +47,75 @@ public static class TaskEvents
 
 public class TaskCreatedEvent : BaseEvent<Entity>
 {
-    public TaskCreatedEvent(TodoTask ritual, DateTime created) : base("CreateTaskEvent", created, ritual) { }
+    public TaskCreatedEvent(TodoTask task, DateTime created) : base("CreateTaskEvent", created, task) { }
 }
 
 public class TaskDeletedEvent : BaseEvent<Entity>
 {
-    public TodoTask Ritual { get; private set; }
+    public TodoTask Task { get; private set; }
 
-    public TaskDeletedEvent(TodoTask ritual, DateTime created) : base("RemoveTaskEvent", created, ritual)
+    public TaskDeletedEvent(TodoTask task, DateTime created) : base("RemoveTaskEvent", created, task)
     {
-        Ritual = ritual;
+        Task = task;
     }
 }
 
 public class TaskUpdatedEvent : BaseEvent<TodoTask>
 {
-    public TodoTask Ritual { get; private set; }
+    public TodoTask Task { get; private set; }
 
-    public TaskUpdatedEvent(TodoTask ritual, DateTime created) : base("RemoveTaskEvent", created, ritual)
+    public TaskUpdatedEvent(TodoTask task, DateTime created) : base("RemoveTaskEvent", created, task)
     {
-        Ritual = ritual;
+        Task = task;
     }
 }
 
-public class TaskStartedEvent : BaseEvent<TodoTask>
+public class TaskStartedEvent : BaseEvent<Entity>
 {
-    public TodoTask Ritual { get; private set; }
+    public TodoTask Task { get; private set; }
 
-    public TaskStartedEvent(TodoTask ritual, DateTime created) : base("RemoveTaskEvent", created, ritual)
+    public TaskStartedEvent(TodoTask task, DateTime created) : base("StartTaskEvent", created, task)
     {
-        Ritual = ritual;
+        Task = task;
     }
 }
 
 public class TaskStoppedEvent : BaseEvent<TodoTask>
 {
-    public TodoTask Ritual { get; private set; }
+    public TodoTask Task { get; private set; }
 
-    public TaskStoppedEvent(TodoTask ritual, DateTime created) : base("RemoveTaskEvent", created, ritual)
+    public TaskStoppedEvent(TodoTask task, DateTime created) : base("RemoveTaskEvent", created, task)
     {
-        Ritual = ritual;
+        Task = task;
     }
 }
 
 public class TaskContinuedEvent : BaseEvent<TodoTask>
 {
-    public TodoTask Ritual { get; private set; }
+    public TodoTask Task { get; private set; }
 
-    public TaskContinuedEvent(TodoTask ritual, DateTime created) : base("RemoveTaskEvent", created, ritual)
+    public TaskContinuedEvent(TodoTask task, DateTime created) : base("RemoveTaskEvent", created, task)
     {
-        Ritual = ritual;
+        Task = task;
     }
 }
 
 public class TaskMigrated : BaseEvent<TodoTask>
 {
-    public TodoTask Ritual { get; private set; }
+    public TodoTask Task { get; private set; }
 
-    public TaskMigrated(TodoTask ritual, DateTime created) : base("RemoveTaskEvent", created, ritual)
+    public TaskMigrated(TodoTask task, DateTime created) : base("RemoveTaskEvent", created, task)
     {
-        Ritual = ritual;
+        Task = task;
     }
 }
 
-public class TaskCompletedEvent : BaseEvent<TodoTask>
+public class TaskCompletedEvent : BaseEvent<Entity>
 {
-    public TodoTask Ritual { get; private set; }
+    public TodoTask Task { get; private set; }
 
-    public TaskCompletedEvent(TodoTask ritual, DateTime created) : base("RemoveTaskEvent", created, ritual)
+    public TaskCompletedEvent(TodoTask task, DateTime created) : base("CompleteTaskEvent", created, task)
     {
-        Ritual = ritual;
+        Task = task;
     }
 }
