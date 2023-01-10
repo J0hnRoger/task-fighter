@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using TaskSamurai.Domain.TasksManagement.Commands;
@@ -8,10 +7,10 @@ using Xunit;
 
 namespace TaskFighter.Tests;
 
-public class TasksCommandTests
+public class EventCommandTests
 {
     [Fact]
-    public async Task CreateTask_WithMinimalMandatoryProperties()
+    public async Task CreateEvent_WithMinimalMandatoryProperties()
     {
         SamuraiTasksContext samuraiTasksContext = TestHelpers.CreateTestContext();
         var handler = new CreateTaskCommandHandler(samuraiTasksContext);

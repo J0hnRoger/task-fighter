@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using FluentAssertions;
 using MediatR;
+using TaskSamurai.Domain.DayScheduling.Requests;
 using TaskSamurai.Domain.TasksManagement.Commands;
 using TaskSamurai.Infrastructure;
 using Xunit;
@@ -42,6 +43,14 @@ public class CommandLineParserTests
         (result as AddTaskRequest).Name.Should().Be("Nettoyer le poêle");
         (result as AddTaskRequest).Area.Should().Be("majordome");
         (result as AddTaskRequest).Context.Should().Be("perso");
+    }
+    
+    [Fact]
+    public void CommandLineParser_ReturnReportingTask()
+    {
+        CommandParser parser = CreateCommandParser();
+        var result = parser.ParseArgs("day end energy:3");
+        result.Should().BeOfType<EndDayScheduleRequest>();
     }
 
     [Fact]

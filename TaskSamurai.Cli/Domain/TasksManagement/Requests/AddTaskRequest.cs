@@ -1,11 +1,14 @@
 ﻿using MediatR;
-using Spectre.Console;
 using TaskSamurai.Infrastructure.Persistence;
 
 namespace TaskSamurai.Domain.TasksManagement.Commands;
 
 public record AddTaskRequest : IRequest<TodoTask>
 {
+    public string Context { get; set; }
+    public string Name { get; set; }
+    public string Area { get; set; }
+    
     public AddTaskRequest(string serializedValue, string serializedFilters)
     {
         int nearestModifier = (serializedValue.IndexOf("a:") < serializedValue.IndexOf("c:"))
@@ -24,10 +27,6 @@ public record AddTaskRequest : IRequest<TodoTask>
             ? serializedValue.Split("c:")[1].Split(" ")[0]
             : "perso";
     }
-
-    public string Context { get; set; }
-    public string Name { get; set; }
-    public string Area { get; set; }
 }
 
 public class CreateTaskCommandHandler : IRequestHandler<AddTaskRequest, TodoTask>

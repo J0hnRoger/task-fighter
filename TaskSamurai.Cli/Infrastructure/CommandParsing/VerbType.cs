@@ -13,6 +13,7 @@ public class VerbType
         new VerbType() {Name = "Show"},
         new VerbType() {Name = "Start"},
         new VerbType() {Name = "Finish"},
+        new VerbType() {Name = "End"}
     };
 
     public static VerbType Get(string literal)

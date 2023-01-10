@@ -17,6 +17,15 @@ public class TodoTaskTests
         task.GetAge(now).Should().Be("2d");
     }
 
+    [Fact]
+    public void TodoTask_ClearEvents_WhenUpdated()
+    {
+        var testDate = DateTime.Now;
+        var todo = CreateTestTask(testDate);
+        todo.Start(testDate.AddHours(2));
+        todo.DomainEvents.Should().HaveCount(1);
+    }
+    
     private static TodoTask CreateTestTask(DateTime now)
     {
         TodoTask task = new TodoTask()
@@ -28,12 +37,4 @@ public class TodoTaskTests
         return task;
     }
 
-    [Fact]
-    public void TodoTask_ClearEvents_WhenUpdated()
-    {
-        var testDate = DateTime.Now;
-        var todo = CreateTestTask(testDate);
-        todo.Start(testDate.AddHours(2));
-        todo.DomainEvents.Should().HaveCount(1);
-    }
 }

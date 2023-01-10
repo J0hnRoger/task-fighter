@@ -1,4 +1,5 @@
-﻿using TaskSamurai.Domain.EventsManagement;
+﻿using TaskSamurai.Domain.Common;
+using TaskSamurai.Domain.EventsManagement;
 using TaskSamurai.Domain.TasksManagement;
 
 namespace TaskSamurai.Domain;
@@ -17,4 +18,5 @@ public interface ISamuraiTaskContext
     
     public void SaveChanges();
     public void BackUp();
+    void RaiseDomainEvent(BaseEvent<Entity> domainEvent);
 }

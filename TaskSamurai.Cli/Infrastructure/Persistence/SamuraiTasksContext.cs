@@ -142,4 +142,9 @@ public class SamuraiTasksContext : ISamuraiTaskContext
         string formatDate = DateTime.Today.ToString("dd-MM-yyyy");
         SaveChanges(_dbConfig.TodosPath.Split(".json")[0] + formatDate + ".json");
     }
+
+    public void RaiseDomainEvent(BaseEvent<Entity> domainEvent)
+    {
+        _domainEvents.Add(domainEvent);
+    }
 }
