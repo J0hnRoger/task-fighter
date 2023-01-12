@@ -8,6 +8,16 @@ namespace TaskFighter.Tests;
 
 public class DayRequestTests
 {
+    
+    [Fact]
+    public async Task StartDayScheduleRequest_CreateReporting()
+    {
+        SamuraiTasksContext samuraiTasksContext = TestHelpers.CreateTestContext();
+        var handler = new StartDayScheduleRequestHandler(samuraiTasksContext);
+        var result = await handler.Handle(new StartDayScheduleRequest("test des notes energy:3", "")
+            , CancellationToken.None);
+    }
+    
     [Fact]
     public async Task EndDayRequest_CreateReporting()
     {
@@ -15,6 +25,6 @@ public class DayRequestTests
         var handler = new EndDayScheduleRequestHandler(samuraiTasksContext);
         var result = await handler.Handle(new EndDayScheduleRequest("test des notes energy:3", "")
             , CancellationToken.None);
-        
+         
     }
 }

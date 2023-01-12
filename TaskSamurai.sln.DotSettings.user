@@ -31,6 +31,8 @@
     &lt;TestId&gt;xUnit::47432BDC-9886-49FA-B16E-115D921E730B::net6.0::TaskFighter.Tests.CommandLineParserTests.CommandLineParser_ReturnTaskEntity&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::47432BDC-9886-49FA-B16E-115D921E730B::net6.0::TaskFighter.Tests.TasksCommandTests.ListTask_WithFilters_ReturnAdaptedView&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::47432BDC-9886-49FA-B16E-115D921E730B::net6.0::TaskFighter.Tests.TasksCommandTests.FinishTask_CreateFinishTaskEvent&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::47432BDC-9886-49FA-B16E-115D921E730B::net6.0::TaskFighter.Tests.CommandLineParserTests.CommandLineParser_ReturnReportingTask&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::47432BDC-9886-49FA-B16E-115D921E730B::net6.0::TaskFighter.Tests.DayRequestTests.EndDayRequest_CreateReporting&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	</wpf:ResourceDictionary>

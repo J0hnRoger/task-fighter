@@ -9,6 +9,12 @@ namespace TaskSamurai.Domain.DayReporting;
 /// </summary>
 public class DailyReport : Entity
 {
+   public DailyReport(string notes, int energyLevel, DateTime created)
+   {
+      Notes = notes;
+      EnergyLevel = energyLevel;
+   }
+   
    public int EnergyLevel { get; set; } 
    public int ConcentrationLevel { get; set; } 
    public int MoodLevel { get; set; } 

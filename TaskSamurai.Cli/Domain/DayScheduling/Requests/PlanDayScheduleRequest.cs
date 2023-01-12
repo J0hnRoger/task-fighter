@@ -2,14 +2,17 @@
 
 namespace TaskSamurai.Domain.DayScheduling.Requests;
 
-public record GenerateDayScheduleRequest : IRequest<DaySchedule>
+public record PlanDayScheduleRequest : IRequest<DaySchedule>
 {
     public DateTime CurrentDay { get; set; }
+    public PlanDayScheduleRequest(string serializedValue, string serializedFilters)
+    {
+    }
 }
 
-public class GenerateDayScheduleCommandHandler : IRequestHandler<GenerateDayScheduleRequest, DaySchedule>
+public class PlanDayScheduleCommandHandler : IRequestHandler<PlanDayScheduleRequest, DaySchedule>
 {
-    public Task<DaySchedule> Handle(GenerateDayScheduleRequest request, CancellationToken cancellationToken)
+    public Task<DaySchedule> Handle(PlanDayScheduleRequest request, CancellationToken cancellationToken)
     {
         return Task.FromResult(new DaySchedule()
         {

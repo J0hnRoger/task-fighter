@@ -16,7 +16,7 @@ public class CommandParser
     private IBaseRequest _request;
     private Command _currentCommand;
 
-    public static string commandParsingRegex = @"(\w*) (\S* )*\b(end|add|modify|delete|list|show|start|finish)\b( .*)*";
+    public static string commandParsingRegex = $@"(\w*) (\S* )*\b({String.Join("|", VerbType.AllTypes.Select(vt => vt.Name.ToLower()))})\b( .*)*";
 
     public CommandParser(List<Type> allRequestTypes)
     {

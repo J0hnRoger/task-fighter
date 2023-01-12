@@ -58,9 +58,9 @@ if (command is ListTaskRequest listTasksCommand)
     AnsiConsole.Write(table.Table);
 }
 
-if (command is GenerateDayScheduleRequest)
+if (command is PlanDayScheduleRequest planDayRequest)
 {
-    var result = await _mediator.Send(new GenerateDayScheduleRequest(){ CurrentDay = DateTime.Now });
+    var result = await _mediator.Send(planDayRequest);
     // Persist day on the DB.json
     TaskFighterTable<TimeBlock> table = new TaskFighterTable<TimeBlock>(result.TimeBlocks.ToList());
     foreach (var tb in result.TimeBlocks)

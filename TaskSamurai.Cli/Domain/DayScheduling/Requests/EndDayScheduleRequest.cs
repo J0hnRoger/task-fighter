@@ -30,12 +30,8 @@ public class EndDayScheduleRequestHandler : IRequestHandler<EndDayScheduleReques
         // TODO - var currentDay = _context.GetCurrentDaySchedule()
         //  var currentDay.End() <-- update les Task non-terminées
         // report.CalculateDuration();
-        
-        var report = new DailyReport()
-        {
-           EnergyLevel = request.EnergyLevel,
-           Notes = request.Notes,
-        };
+
+        var report = new DailyReport(request.Notes, request.EnergyLevel, DateTime.Now);
 
         _context.RaiseDomainEvent(DayEvents.EndDayEvent(report));
         _context.SaveChanges();
