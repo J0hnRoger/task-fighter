@@ -16,7 +16,7 @@ public class TestHelpers
         // CleanUp 
         config.CurrentIndex = 0;
         File.WriteAllText(config.TodosPath,"[]");
-        File.WriteAllText(config.RitualsPath,"[]" );
+        File.WriteAllText(config.BackLogPath,"[]" );
         File.WriteAllText(config.CalendarPath,"[]"  );
         File.WriteAllText(config.LoggerPath,"[]");
 

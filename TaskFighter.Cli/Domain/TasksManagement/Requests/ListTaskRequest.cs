@@ -31,6 +31,9 @@ public class ListTaskCommandHandler : IRequestHandler<ListTaskRequest, List<Todo
     {
         switch (request.Filters)
         {
+            
+            case "backlog":
+                return Task.FromResult(_context.Tasks.ToList());
             case "all":
                 return Task.FromResult(_context.Tasks.ToList());
             default:

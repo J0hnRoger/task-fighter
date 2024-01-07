@@ -8,6 +8,7 @@ public interface IFighterTaskContext
 {
     public IReadOnlyList<TodoTask> Tasks { get; }
     public IReadOnlyList<TodoEvent> Events { get; }
+    public IReadOnlyList<TodoTask> Backlog { get; }
 
     TodoTask GetTask(int requestTaskId);
     public TodoTask AddTask(TodoTask newTask);

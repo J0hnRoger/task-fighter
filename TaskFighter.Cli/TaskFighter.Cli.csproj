@@ -5,11 +5,11 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <AssemblyName>tf</AssemblyName>
+        <AssemblyName>t</AssemblyName>
         <UserSecretsId>49387a9b-04a3-417d-a5e6-ab72bfc4efc2</UserSecretsId>
         <RootNamespace>TaskFighter</RootNamespace>
-        <Company>task</Company>
-        <Product>TaskFighter</Product>
+        <Company>John</Company>
+        <Product>t</Product>
     </PropertyGroup>
 
     <ItemGroup>

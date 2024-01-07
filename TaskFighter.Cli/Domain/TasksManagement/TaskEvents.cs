@@ -19,6 +19,11 @@ public static class TaskEvents
         return new TaskCompletedEvent(task, DateTime.Now);
     }
 
+    public static BaseEvent<Entity> PlanTaskEvent(TodoTask task, DateOnly date)
+    {
+        return new TaskPlannedEvent(task, date);
+    }
+    
     public static TaskUpdatedEvent UpdateTaskEvent(TodoTask task)
     {
         return new TaskUpdatedEvent(task, DateTime.Now);
@@ -43,6 +48,7 @@ public static class TaskEvents
     {
         return new TaskMigrated(task, DateTime.Now);
     }
+    
 }
 
 public class TaskCreatedEvent : BaseEvent<Entity>
@@ -100,11 +106,22 @@ public class TaskContinuedEvent : BaseEvent<TodoTask>
     }
 }
 
+public class TaskPlannedEvent : BaseEvent<Entity>
+{
+    public TodoTask Task { get; private set; }
+
+    public TaskPlannedEvent(TodoTask task, DateOnly created) : base("PlanTaskEvent", 
+        created.ToDateTime(TimeOnly.MinValue), task)
+    {
+        Task = task;
+    }
+}
+
 public class TaskMigrated : BaseEvent<TodoTask>
 {
     public TodoTask Task { get; private set; }
 
-    public TaskMigrated(TodoTask task, DateTime created) : base("RemoveTaskEvent", created, task)
+    public TaskMigrated(TodoTask task, DateTime created) : base("MigrateTaskEvent", created, task)
     {
         Task = task;
     }

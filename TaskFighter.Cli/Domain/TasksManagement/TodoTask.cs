@@ -75,8 +75,8 @@ public class TodoTask : Entity, ITableRenderable
 
     public void Start(DateTime startDate)
     {
-        if (Status != TodoTaskStatus.BackLog)
-            throw new Exception($"Asked task {Id} not in backlog");
+        if (Status != TodoTaskStatus.Planned)
+            throw new Exception($"Asked task {Id} not in the Todo today");
         Status = TodoTaskStatus.Active;
         StartDate = startDate;
         
@@ -86,5 +86,14 @@ public class TodoTask : Entity, ITableRenderable
     public override string ToString()
     {
         return $"{Id} - {Name} - {Status}";
+    }
+
+    public void TackleToday(DateOnly today)
+    {
+        if (Status == TodoTaskStatus.Planned)
+            throw new Exception($"Asked task {Id} already in the Todo today");
+        Status = TodoTaskStatus.Planned;
+        
+        // _domainEvents.Add(new TaskPlannedEvent(this, today));
     }
 }

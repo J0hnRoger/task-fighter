@@ -1,6 +1,11 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Net.Http.Json;
 using CSharpFunctionalExtensions;
 using FluentAssertions;
+using Microsoft.VisualStudio.TestPlatform.ObjectModel.Utilities;
+using Newtonsoft.Json;
 using TaskFighter.Domain.DayScheduling;
 using TaskFighter.Domain.EventsManagement;
 using TaskFighter.Domain.RitualsManagement;
@@ -201,25 +206,31 @@ public class TaskFighterTests
     }
     
     [Fact]
-    public void TaskFighter_Rituals_Tests()
+    public void TaskFighter_BackLog_Tests()
     {
-        string configDir = TestConfiguration.GetSecretValue("ConfigPath");
+        string testConfigPath = TestConfiguration.GetSecretValue("ConfigPath");
+        string configContent = File.ReadAllText(testConfigPath);
+        configContent.Should().NotBeNullOrEmpty();
+        TaskFighterConfig config = JsonConvert.DeserializeObject<TaskFighterConfig>(configContent);
+        config.CurrentIndex = 0;
+        File.WriteAllText(config.BackLogPath, "[]");
         
-        TaskFighterConfig config = new TaskFighterConfig()
-        {
-           CurrentIndex = 0,
-           ConfigPath = configDir + "test.config.json",
-           TodosPath =  configDir + "tasks.json", 
-           CalendarPath =  configDir + "calendar.json", 
-           RitualsPath =  configDir + "rituals.json", 
-           LoggerPath = configDir + "database.json",
-           Context = "test"
-        };
+        FighterTasksContext fighterTasksContext = new(config);
         
-        FighterTasksContext fighterTasksContext = new FighterTasksContext(config);
-        fighterTasksContext.AddRitual(new Ritual() { Name = "Test Ritual" });
-        fighterTasksContext.AddRitual(new Ritual() { Name = "Test Ritual 2" });
-         
+        var newTask = fighterTasksContext.AddTask(new TodoTask() {
+            Name = "Test Task",
+        });
+        
+        newTask.Context.Should().Be(fighterTasksContext.Context);
+        int taskId = newTask.Id;
+        taskId.Should().BeGreaterThan(0);
+        fighterTasksContext.SaveChanges();
+        
+        var task = fighterTasksContext.GetTask(taskId);
+        
+        fighterTasksContext.TackleToday(task);
+        
+        // fighterTasksContext.DeleteTask(taskId);
         fighterTasksContext.SaveChanges();
     }
     
