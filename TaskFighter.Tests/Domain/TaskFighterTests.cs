@@ -230,7 +230,7 @@ public class TaskFighterTests
         
         fighterTasksContext.TackleToday(task);
         
-        // fighterTasksContext.DeleteTask(taskId);
+        task.Finish(DateTime.Now);
         fighterTasksContext.SaveChanges();
     }
     

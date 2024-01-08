@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Configuration;
 using Spectre.Console;
+using Spectre.Console.Json;
 
 namespace TaskFighter.Infrastructure.Configuration;
 
@@ -26,6 +27,14 @@ public class ShowConfigRequestHandler : IRequestHandler<ShowConfigRequest>
    public Task<Unit> Handle(ShowConfigRequest request, CancellationToken cancellationToken)
    {
        AnsiConsole.WriteLine($"ConfigFile: {_configPath}");
+       JsonText json = new JsonText(File.ReadAllText(_configPath));
+       AnsiConsole.Write(
+           new Panel(json)
+               .Header("Some JSON in a panel")
+               .Collapse()
+               .RoundedBorder()
+               .BorderColor(Color.Yellow));
+       
        return Task.FromResult(new Unit());
    }
 }

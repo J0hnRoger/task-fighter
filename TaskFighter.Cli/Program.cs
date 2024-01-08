@@ -55,7 +55,10 @@ if (command is NotFoundRequest)
 if (command is ListTaskRequest listTasksCommand)
 {
     var result = await _mediator.Send(listTasksCommand);
-    TaskFighterTable<TodoTask> table = new TaskFighterTable<TodoTask>(result);
+    TaskFighterTable<TodoTask> table = new(result, new List<string>()
+    {
+       "Id", "Name", ""  
+    });
     AnsiConsole.Write(table.Table);
     return;
 }

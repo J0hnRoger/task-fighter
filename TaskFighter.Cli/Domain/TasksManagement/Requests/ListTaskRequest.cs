@@ -9,7 +9,7 @@ public record ListTaskRequest : IRequest<List<TodoTask>>
 
     public ListTaskRequest(string value, string filters)
     {
-        Filters = filters;
+        Filters = value;
     }
 
     public override string ToString()
@@ -33,7 +33,7 @@ public class ListTaskCommandHandler : IRequestHandler<ListTaskRequest, List<Todo
         {
             
             case "backlog":
-                return Task.FromResult(_context.Tasks.ToList());
+                return Task.FromResult(_context.Backlog.ToList());
             case "all":
                 return Task.FromResult(_context.Tasks.ToList());
             default:

@@ -23,8 +23,9 @@
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
       <PackageReference Include="NAudio" Version="2.1.0" />
       <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
-      <PackageReference Include="Spectre.Console" Version="0.45.1-preview.0.46" />
+      <PackageReference Include="Spectre.Console" Version="0.48.1-preview.0.11" />
       <PackageReference Include="Spectre.Console.Cli" Version="0.45.1-preview.0.46" />
+      <PackageReference Include="Spectre.Console.Json" Version="0.48.1-preview.0.11" />
     </ItemGroup>
 
     <ItemGroup>

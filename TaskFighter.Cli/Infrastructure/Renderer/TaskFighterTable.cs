@@ -16,22 +16,24 @@ namespace TaskFighter.Infrastructure.Renderer;
             }
         }
 
-        public TaskFighterTable(List<T> iterables)
+        public TaskFighterTable(List<T> iterables, List<string>? fields = null)
         { 
             _table = new Table();
             _table.Border = TableBorder.Rounded;
 
-            PropertyInfo[] properties = typeof(T).GetProperties();
+            if (fields == null)
+               fields = typeof(T).GetProperties().Select(p => p.Name).ToList();
+            
             // baseclass property 
             _table.AddColumn(new TableColumn("[green]Id[/]"));
-            foreach (PropertyInfo propertyInfo in properties)
+            foreach (string field in fields)
             {
-                _table.AddColumn(new TableColumn($"[green]{propertyInfo.Name}[/]").LeftAligned());
+                _table.AddColumn(new TableColumn($"[green]{field}[/]").LeftAligned());
             }
 
             foreach (var row in iterables)
             {
-                _table.AddRow(row.GetFields());
+                _table.AddRow(row.GetFields().Take(fields.Count).ToArray());
             }
         }
     }
