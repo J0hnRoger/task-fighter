@@ -1,4 +1,5 @@
-﻿using TaskFighter.Domain.Common;
+﻿using System.Security.Cryptography;
+using TaskFighter.Domain.Common;
 using TaskFighter.Domain.Common.Interfaces;
 using TaskFighter.Infrastructure.Persistence;
 
@@ -95,5 +96,15 @@ public class TodoTask : Entity, ITableRenderable
         Status = TodoTaskStatus.Planned;
         
         // _domainEvents.Add(new TaskPlannedEvent(this, today));
+    }
+
+    public static TodoTask CreateFromBatchLine(string batchLine, string project)
+    {
+        string[] properties = batchLine.Split(";");
+        return new TodoTask()
+        {
+            Name = properties[0],
+            Project = project,
+        };
     }
 }

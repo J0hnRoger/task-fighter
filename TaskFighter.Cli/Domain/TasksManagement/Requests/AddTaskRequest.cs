@@ -2,7 +2,6 @@
 using TaskFighter.Infrastructure.Persistence;
 
 namespace TaskFighter.Domain.TasksManagement.Requests;
-
 public record AddTaskRequest : IRequest<TodoTask>
 {
     public string Context { get; set; }

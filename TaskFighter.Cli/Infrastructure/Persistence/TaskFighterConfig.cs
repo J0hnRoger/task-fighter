@@ -15,4 +15,10 @@ public class TaskFighterConfig
     public string CalendarPath { get; set; }
     public string LoggerPath { get; set; }
     public string Context { get; set; }
+
+    public string GetBasePath()
+    {
+        int lastSlash = ConfigPath.LastIndexOf("/", StringComparison.Ordinal);
+        return ConfigPath.Substring(0, lastSlash);
+    }
 }

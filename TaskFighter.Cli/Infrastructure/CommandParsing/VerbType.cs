@@ -14,7 +14,8 @@ public class VerbType
         new VerbType() {Name = "Start"},
         new VerbType() {Name = "Done"},
         new VerbType() {Name = "End"},
-        new VerbType() {Name = "Plan"}
+        new VerbType() {Name = "Plan"},
+        new VerbType() {Name = "Batch"}
     };
 
     public static VerbType Get(string literal)

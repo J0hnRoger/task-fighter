@@ -31,8 +31,10 @@ ServiceProvider ConfigureServices()
         .Where(t => t.GetInterfaces().Contains(typeof(IBaseRequest)))
         .ToList();
     
+    
     return new ServiceCollection()
         .AddSingleton<IConfigurationRoot>(p => configuration)
+        .AddSingleton<TaskFighterConfig>(p => config)
         .AddSingleton(p =>  new CommandParser(allDomainRequestTypes))
         .AddSingleton<IFighterTaskContext>(prodiver => new FighterTasksContext(config))
         .AddMediatR(typeof(ShowConfigRequestHandler))
