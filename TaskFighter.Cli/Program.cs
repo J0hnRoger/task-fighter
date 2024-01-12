@@ -57,9 +57,18 @@ if (command is NotFoundRequest)
 if (command is ListTaskRequest listTasksCommand)
 {
     var result = await _mediator.Send(listTasksCommand);
-    TaskFighterTable<TodoTask> table = new(result, new List<string>()
+   
+    if (result.Project == "backlog")
+        AnsiConsole.MarkupLine($"[bold]Backlog[/]");
+    
+    else if (result.Day.HasValue)
     {
-       "Id", "Name", ""  
+        AnsiConsole.MarkupLine($"[bold]Daily Todo: {result.Day.ToString()}[/]");
+    }
+    
+    TaskFighterTable<TodoTask> table = new(result.Tasks, new List<string>()
+    {
+       "Id", "Name", "Status", "Project"  
     });
     AnsiConsole.Write(table.Table);
     return;

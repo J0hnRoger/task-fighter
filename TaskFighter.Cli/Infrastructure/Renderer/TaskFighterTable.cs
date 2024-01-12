@@ -22,10 +22,12 @@ namespace TaskFighter.Infrastructure.Renderer;
             _table.Border = TableBorder.Rounded;
 
             if (fields == null)
+            {
                fields = typeof(T).GetProperties().Select(p => p.Name).ToList();
+                // baseclass property 
+                _table.AddColumn(new TableColumn("[green]Id[/]"));
+            }
             
-            // baseclass property 
-            _table.AddColumn(new TableColumn("[green]Id[/]"));
             foreach (string field in fields)
             {
                 _table.AddColumn(new TableColumn($"[green]{field}[/]").LeftAligned());

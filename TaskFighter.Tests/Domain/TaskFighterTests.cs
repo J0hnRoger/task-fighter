@@ -1,14 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net.Http.Json;
 using CSharpFunctionalExtensions;
 using FluentAssertions;
-using Microsoft.VisualStudio.TestPlatform.ObjectModel.Utilities;
 using Newtonsoft.Json;
 using TaskFighter.Domain.DayScheduling;
 using TaskFighter.Domain.EventsManagement;
-using TaskFighter.Domain.RitualsManagement;
 using TaskFighter.Domain.TasksManagement;
 using TaskFighter.Infrastructure.Persistence;
 using Xunit;

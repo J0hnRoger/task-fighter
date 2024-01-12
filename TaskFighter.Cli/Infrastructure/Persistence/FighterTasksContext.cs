@@ -11,16 +11,20 @@ public class FighterTasksContext : IFighterTaskContext
     private readonly TaskFighterConfig _dbConfig;
 
     private readonly List<BaseEvent<Entity>> _domainEvents = new();
-    private readonly DateOnly _today;
+    private readonly DailyTodo _currentDay;
 
     private DailyTodoLists _todoLists { get; set; }
     private List<TodoTask> _backlog { get; set; }
     private List<TodoEvent> _events { get; set; }
 
     public IReadOnlyList<TodoTask> Backlog => _backlog;
-    public IReadOnlyList<TodoTask> Tasks => _todoLists.GetTodoList(_today)!.Tasks;
+
+    public DailyTodoLists DailyTodoLists => _todoLists;
+    public IReadOnlyList<TodoTask> Tasks => _currentDay.Tasks;
+    public DailyTodo DailyTodo => _currentDay;
+
     public IReadOnlyList<TodoEvent> Events => _events;
-    
+
     public string Context => _dbConfig.Context;
 
     /// <summary>
@@ -30,25 +34,27 @@ public class FighterTasksContext : IFighterTaskContext
     public FighterTasksContext(TaskFighterConfig dbConfig)
     {
         _dbConfig = dbConfig;
-        
-        _today = DateOnly.FromDateTime(DateTime.Today);
+
         string backlogPath = Load(_dbConfig.BackLogPath);
         string dailyTodoPath = Load(_dbConfig.TodosPath);
-        
+
         _backlog = JsonConvert.DeserializeObject<List<TodoTask>>(backlogPath) ?? new List<TodoTask>();
-        
-        _todoLists = JsonConvert.DeserializeObject<DailyTodoLists>(dailyTodoPath) ?? new DailyTodoLists();
-        var dailyTodo = _todoLists.GetTodoList(_today);
+
+        _todoLists = JsonConvert.DeserializeObject<DailyTodoLists>(dailyTodoPath,
+                         new TodoTaskStatusJsonConverter(typeof(TodoTaskStatus)))
+                     ?? new DailyTodoLists();
+
+        var today = DateTime.Today;
+        var dailyTodo = _todoLists.GetTodoList(today);
         if (dailyTodo == null)
         {
-            dailyTodo = new DailyTodo()
-            {
-                Date = _today,
-                Tasks = new List<TodoTask>()
-            };
+            dailyTodo = new DailyTodo() {Date = today, Tasks = new List<TodoTask>(), Opened = false};
             _todoLists.Days.Add(dailyTodo);
+            File.WriteAllText(_dbConfig.TodosPath, JsonConvert.SerializeObject(_todoLists, Formatting.Indented));
         }
-         
+
+        _currentDay = dailyTodo;
+
         string calendarFileContent = Load(_dbConfig.CalendarPath);
         _events = JsonConvert.DeserializeObject<List<TodoEvent>>(calendarFileContent) ?? new List<TodoEvent>();
     }
@@ -87,7 +93,7 @@ public class FighterTasksContext : IFighterTaskContext
     {
         var task = _backlog.FirstOrDefault(t => t.Id == taskId);
         if (task == null)
-            throw new Exception($"Task {taskId} doesn't exists"); 
+            throw new Exception($"Task {taskId} doesn't exists");
         return task;
     }
 
@@ -105,11 +111,10 @@ public class FighterTasksContext : IFighterTaskContext
 
     public void TackleToday(TodoTask task)
     {
-        var dailyTodo = _todoLists.GetTodoList(_today);
-        task.TackleToday(_today);
-        dailyTodo!.Tasks.Add(task);
+        task.TackleToday(_currentDay.Date);
+        _currentDay!.Tasks.Add(task);
     }
-    
+
     public void DeleteTask(int taskId)
     {
         var deletingTask = _backlog.Find(t => t.Id == taskId);
@@ -137,14 +142,25 @@ public class FighterTasksContext : IFighterTaskContext
 
     public void SaveChanges()
     {
+        // UpdateDailyTodoLists();
+
         File.WriteAllText(_dbConfig.ConfigPath, JsonConvert.SerializeObject(_dbConfig, Formatting.Indented));
 
         File.WriteAllText(_dbConfig.CalendarPath, JsonConvert.SerializeObject(_events, Formatting.Indented));
 
         LogEvents();
-        
+
         File.WriteAllText(_dbConfig.BackLogPath, JsonConvert.SerializeObject(_backlog, Formatting.Indented));
         File.WriteAllText(_dbConfig.TodosPath, JsonConvert.SerializeObject(_todoLists, Formatting.Indented));
+    }
+
+    private void UpdateDailyTodoLists()
+    {
+        var todo = _todoLists.Days.First(d => d.Date == _currentDay.Date);
+        todo.Tasks = _currentDay.Tasks;
+        todo.Date = _currentDay.Date;
+        todo.Opened = _currentDay.Opened;
+        todo.ClosedDate = _currentDay.ClosedDate;
     }
 
     private void LogEvents()
@@ -153,10 +169,7 @@ public class FighterTasksContext : IFighterTaskContext
         List<SerializedEvent> events = JsonConvert.DeserializeObject<List<SerializedEvent>>(content);
         events.AddRange(_domainEvents.Select(d => new SerializedEvent()
         {
-            Created = d.Created,
-            Entity = d.Entity,
-            EntityId = d.EntityId,
-            Type = d.Type
+            Created = d.Created, Entity = d.Entity, EntityId = d.EntityId, Type = d.Type
         }));
         File.WriteAllText(_dbConfig.LoggerPath, JsonConvert.SerializeObject(events));
     }

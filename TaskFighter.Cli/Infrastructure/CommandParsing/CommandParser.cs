@@ -36,7 +36,10 @@ public class CommandParser
             return new HelpRequest();
 
         string entityLiteral = result.Groups[1].Value?.Trim();        
-        _currentCommand.Entity = EntityType.Get(entityLiteral);
+        var parsedEntityResult = EntityType.Get(entityLiteral);
+        if (parsedEntityResult.IsFailure)
+            throw new Exception(parsedEntityResult.Error);
+        _currentCommand.Entity = parsedEntityResult.Value;
         
         string filtersLiteral = result.Groups[2].Value?.Trim();        
         _currentCommand.Filter = filtersLiteral;
@@ -47,6 +50,11 @@ public class CommandParser
         string valueLiteral = result.Groups[4].Value?.Trim();
         _currentCommand.Value = valueLiteral;
 
+        if (entityLiteral == null)
+        {
+            
+        }
+        
         Type requestType = _allRequestTypes.FirstOrDefault(t => t.Name == _currentCommand.GetRequestName());
         if (requestType == null)
             return new HelpRequest();

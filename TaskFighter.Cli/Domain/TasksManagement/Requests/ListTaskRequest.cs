@@ -3,13 +3,17 @@ using TaskFighter.Infrastructure.Persistence;
 
 namespace TaskFighter.Domain.TasksManagement.Requests;
 
-public record ListTaskRequest : IRequest<List<TodoTask>>
+public record ListTaskRequest : IRequest<ListTodoTaskViewModel>
 {
     public string Filters { get; set; }
+    public string Project { get; set; }
 
     public ListTaskRequest(string value, string filters)
     {
-        Filters = value;
+        if (filters.StartsWith("p:"))
+            Project = filters.Split("p:")[1]; 
+            
+        Filters = filters;
     }
 
     public override string ToString()
@@ -18,7 +22,7 @@ public record ListTaskRequest : IRequest<List<TodoTask>>
     }
 }
 
-public class ListTaskCommandHandler : IRequestHandler<ListTaskRequest, List<TodoTask>>
+public class ListTaskCommandHandler : IRequestHandler<ListTaskRequest, ListTodoTaskViewModel>
 {
     private readonly IFighterTaskContext _context;
 
@@ -27,18 +31,37 @@ public class ListTaskCommandHandler : IRequestHandler<ListTaskRequest, List<Todo
         _context = context;
     }
 
-    public Task<List<TodoTask>> Handle(ListTaskRequest request, CancellationToken cancellationToken)
+    public Task<ListTodoTaskViewModel> Handle(ListTaskRequest request, CancellationToken cancellationToken)
     {
-        switch (request.Filters)
+        List<TodoTask> tasks = new();
+        switch (request.Project)
         {
-            
             case "backlog":
-                return Task.FromResult(_context.Backlog.ToList());
+                tasks = _context.Backlog.ToList();
+                break;
             case "all":
-                return Task.FromResult(_context.Tasks.ToList());
+                tasks = _context.Tasks.ToList();
+                break;
             default:
-                return Task.FromResult(_context.Tasks.Where(t => t.Status != TodoTaskStatus.Complete)
-                    .ToList());
+                tasks = _context.Tasks.Where(t => t.Status != TodoTaskStatus.Complete)
+                    .ToList();
+                break;
         }
+
+        var result = new ListTodoTaskViewModel() {Project = request.Project, Tasks = tasks};
+        if (request.Project != "backlog")
+        {
+            result.Day = _context.DailyTodo.Date;
+            result.IsOpened = _context.DailyTodo.Opened;
+        }
+        return  Task.FromResult(result);
     }
+}
+
+public class ListTodoTaskViewModel
+{
+    public string Project { get; set; }
+    public List<TodoTask> Tasks { get; set; }
+    public DateTime? Day { get; set; }
+    public bool IsOpened { get; set; }
 }

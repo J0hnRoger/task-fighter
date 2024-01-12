@@ -1,4 +1,6 @@
-﻿namespace TaskFighter.Infrastructure.CommandParsing;
+﻿using CSharpFunctionalExtensions;
+
+namespace TaskFighter.Infrastructure.CommandParsing;
 
 public class EntityType
 {
@@ -23,9 +25,12 @@ public class EntityType
         TaskType, EventType, WorkflowType, TimeBlock, DaySchedule, ConfigType
     };
 
-    public static EntityType Get(string literal)
+    public static Result<EntityType> Get(string literal)
     {
-        return AllTypes.First(e => e.Name.ToLower() == literal.ToLower()
+        var entity = AllTypes.FirstOrDefault(e => e.Name.ToLower() == literal.ToLower()
                                    || e.ShortCut.ToLower() == literal.ToLower());
+        if (entity == null)
+            return Result.Failure<EntityType>($"Entity {literal} not found");
+        return entity;
     }
 }

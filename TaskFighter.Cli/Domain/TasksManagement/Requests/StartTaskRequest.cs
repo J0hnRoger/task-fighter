@@ -8,7 +8,7 @@ public class StartTaskRequest : IRequest<TodoTask>
 
     public StartTaskRequest(string value, string filter)
     {
-        TaskId = int.Parse(filter);
+        TaskId = int.Parse(value);
     }
 
     public override string ToString()
@@ -28,7 +28,9 @@ public class StartTaskRequestHandler : IRequestHandler<StartTaskRequest, TodoTas
 
     public Task<TodoTask> Handle(StartTaskRequest request, CancellationToken cancellationToken)
     {
-        var task = _context.GetTask(request.TaskId);
+        var task = _context.DailyTodo.Tasks.Find(t => t.Id == request.TaskId);
+        if (task == null)
+            throw new Exception($"Task not found: {request.TaskId}");
         task.Start(DateTime.Now);
         _context.Update(task);
         _context.SaveChanges();

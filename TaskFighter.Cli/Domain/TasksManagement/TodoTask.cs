@@ -1,5 +1,4 @@
-﻿using System.Security.Cryptography;
-using TaskFighter.Domain.Common;
+﻿using TaskFighter.Domain.Common;
 using TaskFighter.Domain.Common.Interfaces;
 using TaskFighter.Infrastructure.Persistence;
 
@@ -9,7 +8,6 @@ public class TodoTask : Entity, ITableRenderable
 {
     // Creation
     public string Name { get; set; }
-    
     public string Project { get; set; }
     public string Context { get; set; }
     public string Description { get; set; }
@@ -21,10 +19,11 @@ public class TodoTask : Entity, ITableRenderable
     public int EstimateDuration { get; set; }
     public string Area { get; set; }
     public int Impact { get; set; }
+    
     public List<string> Tags { get; set; }
     
     // Runtime Properties
-    public TodoTaskStatus Status { get; set; }
+    public TodoTaskStatus Status { get; set; } = TodoTaskStatus.BackLog;
     
     // Reporting Properties
     public int Difficulty { get; set; }
@@ -50,6 +49,7 @@ public class TodoTask : Entity, ITableRenderable
             Id.ToString(),
             Name,
             Status?.Value ?? TodoTaskStatus.BackLog.Value,
+            Project,
             Context,
             GetAge(DateTime.Now),
             Description ?? "",
@@ -89,12 +89,9 @@ public class TodoTask : Entity, ITableRenderable
         return $"{Id} - {Name} - {Status}";
     }
 
-    public void TackleToday(DateOnly today)
+    public void TackleToday(DateTime today)
     {
-        if (Status == TodoTaskStatus.Planned)
-            throw new Exception($"Asked task {Id} already in the Todo today");
         Status = TodoTaskStatus.Planned;
-        
         // _domainEvents.Add(new TaskPlannedEvent(this, today));
     }
 

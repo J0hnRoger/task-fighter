@@ -2,9 +2,12 @@
 
 public class DailyTodoLists
 {
-    public List<DailyTodo> Days { get; set; } = new();
-
-    public DailyTodo? GetTodoList(DateOnly date)
+    public List<DailyTodo> Days { get; set; } 
+    
+    public bool HasOpenedDay => Days
+        .Any(d => d.Opened);
+    
+    public DailyTodo? GetTodoList(DateTime date)
     {
        return Days.FirstOrDefault(d => d.Date == date); 
     }
@@ -12,6 +15,8 @@ public class DailyTodoLists
 
 public class DailyTodo
 {
-    public DateOnly Date { get; set; }
-    public List<TodoTask> Tasks { get; set; } = new();
+    public DateTime Date { get; set; }
+    public List<TodoTask> Tasks { get; set; } 
+    public bool Opened { get; set; }
+    public DateTime ClosedDate { get; set; }
 }
