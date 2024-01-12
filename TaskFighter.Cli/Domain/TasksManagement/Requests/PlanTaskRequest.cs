@@ -28,6 +28,7 @@ public class PlanTaskCommandHandler : IRequestHandler<PlanTaskRequest, List<Todo
         
         var allTasks = _context.Backlog.ToList();
         var dailyTasks = DisplayTasksAsChoices(allTasks);
+        
         foreach (TodoTask task in dailyTasks)
             _context.TackleToday(task);
         _context.SaveChanges();

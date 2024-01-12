@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using TaskFighter.Infrastructure.Persistence;
 
 namespace TaskFighter.Domain.TasksManagement.Requests;
 
@@ -31,6 +32,10 @@ public class StartTaskRequestHandler : IRequestHandler<StartTaskRequest, TodoTas
         var task = _context.DailyTodo.Tasks.Find(t => t.Id == request.TaskId);
         if (task == null)
             throw new Exception($"Task not found: {request.TaskId}");
+        var alreadyActiveTask = _context.DailyTodo.Tasks.FirstOrDefault(t => t.Status == TodoTaskStatus.Active);
+        if (alreadyActiveTask != null)
+            throw new Exception($"Finish your current task first: {alreadyActiveTask}");
+        
         task.Start(DateTime.Now);
         _context.Update(task);
         _context.SaveChanges();

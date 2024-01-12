@@ -38,7 +38,8 @@ public class FighterTasksContext : IFighterTaskContext
         string backlogPath = Load(_dbConfig.BackLogPath);
         string dailyTodoPath = Load(_dbConfig.TodosPath);
 
-        _backlog = JsonConvert.DeserializeObject<List<TodoTask>>(backlogPath) ?? new List<TodoTask>();
+        _backlog = JsonConvert.DeserializeObject<List<TodoTask>>(backlogPath
+        , new TodoTaskStatusJsonConverter(typeof(TodoTaskStatus))) ?? new List<TodoTask>();
 
         _todoLists = JsonConvert.DeserializeObject<DailyTodoLists>(dailyTodoPath,
                          new TodoTaskStatusJsonConverter(typeof(TodoTaskStatus)))
@@ -112,6 +113,8 @@ public class FighterTasksContext : IFighterTaskContext
     public void TackleToday(TodoTask task)
     {
         task.TackleToday(_currentDay.Date);
+        
+        _backlog.Remove(task);
         _currentDay!.Tasks.Add(task);
     }
 

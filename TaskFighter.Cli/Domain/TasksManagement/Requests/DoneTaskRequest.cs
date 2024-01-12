@@ -8,7 +8,7 @@ public class DoneTaskRequest : IRequest<TodoTask>
     
     public DoneTaskRequest(string value, string filter)
     {
-        TaskId = int.Parse(filter);
+        TaskId = int.Parse(value);
     }
     
     public override string ToString()
@@ -28,11 +28,14 @@ public class DoneTaskRequestHandler : IRequestHandler<DoneTaskRequest, TodoTask>
     
    public Task<TodoTask> Handle(DoneTaskRequest request, CancellationToken cancellationToken)
    {
-        var task = _context.GetTask(request.TaskId);
-        task.Finish(DateTime.Now);
-        _context.Update(task);
+        var task = _context.DailyTodo.Tasks.Find(t => t.Id == request.TaskId);
+        if (task == null)
+            throw new Exception($"Task not found: {request.TaskId}");
         
-       _context.SaveChanges();
-       return Task.FromResult(task); 
+        task.Finish(DateTime.Now);
+        
+        _context.Update(task);
+        _context.SaveChanges();
+        return Task.FromResult(task);
    }
 }
