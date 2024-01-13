@@ -39,21 +39,15 @@ public class FighterTasksContext : IFighterTaskContext
         string dailyTodoPath = Load(_dbConfig.TodosPath);
 
         _backlog = JsonConvert.DeserializeObject<List<TodoTask>>(backlogPath
-        , new TodoTaskStatusJsonConverter(typeof(TodoTaskStatus))) ?? new List<TodoTask>();
+            , new TodoTaskStatusJsonConverter(typeof(TodoTaskStatus))) ?? new List<TodoTask>();
 
         _todoLists = JsonConvert.DeserializeObject<DailyTodoLists>(dailyTodoPath,
                          new TodoTaskStatusJsonConverter(typeof(TodoTaskStatus)))
                      ?? new DailyTodoLists();
 
         var today = DateTime.Today;
-        var dailyTodo = _todoLists.GetTodoList(today);
-        if (dailyTodo == null)
-        {
-            dailyTodo = new DailyTodo() {Date = today, Tasks = new List<TodoTask>(), Opened = false};
-            _todoLists.Days.Add(dailyTodo);
-            File.WriteAllText(_dbConfig.TodosPath, JsonConvert.SerializeObject(_todoLists, Formatting.Indented));
-        }
 
+        var dailyTodo = GetOrCreateTodoList(today);
         _currentDay = dailyTodo;
 
         string calendarFileContent = Load(_dbConfig.CalendarPath);
@@ -69,6 +63,27 @@ public class FighterTasksContext : IFighterTaskContext
     public void SetContext(string context)
     {
         _dbConfig.Context = context.ToLower();
+    }
+
+    public void Migrate(TodoTask migrateTask)
+    {
+        var tomorrow = DateTime.Today.AddDays(1);
+        var dailyTodo = GetOrCreateTodoList(tomorrow);
+        migrateTask.Status = TodoTaskStatus.Planned;
+        dailyTodo.Tasks.Add(migrateTask);
+        SaveChanges(); 
+    }
+    
+    private DailyTodo GetOrCreateTodoList(DateTime day)
+    {
+        var dailyTodo = _todoLists.GetTodoList(day);
+        if (dailyTodo == null)
+        {
+            dailyTodo = new DailyTodo() {Date = day, Tasks = new List<TodoTask>(), Opened = false };
+            _todoLists.Days.Add(dailyTodo);
+            File.WriteAllText(_dbConfig.TodosPath, JsonConvert.SerializeObject(_todoLists, Formatting.Indented));
+        }
+        return dailyTodo;
     }
 
     public TodoEvent AddEvent(TodoEvent newTodoEvent)
@@ -98,6 +113,13 @@ public class FighterTasksContext : IFighterTaskContext
         return task;
     }
 
+    public void BackToBacklog(TodoTask returningTask)
+    {
+        returningTask.Status = TodoTaskStatus.BackLog;
+        // Remove from current day?
+        _backlog.Add(returningTask);
+    }
+
     public TodoTask AddTask(TodoTask newTask)
     {
         newTask.Id = ++_dbConfig.CurrentIndex;
@@ -113,7 +135,7 @@ public class FighterTasksContext : IFighterTaskContext
     public void TackleToday(TodoTask task)
     {
         task.TackleToday(_currentDay.Date);
-        
+
         _backlog.Remove(task);
         _currentDay!.Tasks.Add(task);
     }
@@ -145,8 +167,6 @@ public class FighterTasksContext : IFighterTaskContext
 
     public void SaveChanges()
     {
-        // UpdateDailyTodoLists();
-
         File.WriteAllText(_dbConfig.ConfigPath, JsonConvert.SerializeObject(_dbConfig, Formatting.Indented));
 
         File.WriteAllText(_dbConfig.CalendarPath, JsonConvert.SerializeObject(_events, Formatting.Indented));

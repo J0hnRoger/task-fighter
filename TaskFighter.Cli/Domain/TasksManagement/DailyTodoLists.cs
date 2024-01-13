@@ -1,4 +1,6 @@
-﻿namespace TaskFighter.Domain.TasksManagement;
+﻿using TaskFighter.Infrastructure.Persistence;
+
+namespace TaskFighter.Domain.TasksManagement;
 
 public class DailyTodoLists
 {
@@ -19,4 +21,21 @@ public class DailyTodo
     public List<TodoTask> Tasks { get; set; } 
     public bool Opened { get; set; }
     public DateTime ClosedDate { get; set; }
+
+    public List<TodoTask> GetNotFinishedTasks()
+    {
+        return Tasks.Where(t => t.Status != TodoTaskStatus.Complete).ToList();
+    }
+
+    public void Shutdown(DateTime closedDate)
+    {
+        var notFinishedTasks = Tasks
+            .Where(t => t.Status != TodoTaskStatus.Complete)
+            .ToList();
+        
+        if (notFinishedTasks.Any())
+            throw new Exception($"Not finished tasks: {string.Join(",", notFinishedTasks.Select(t => t.Id + " - " + t.Name))}");
+        
+        ClosedDate = closedDate;
+    }
 }

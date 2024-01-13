@@ -51,7 +51,7 @@ public class CommandLineParserTests
     {
         CommandParser parser = CreateCommandParser();
         var result = parser.ParseArgs("day end energy:3");
-        result.Should().BeOfType<EndDayScheduleRequest>();
+        result.Should().BeOfType<EndDayRequest>();
     }
 
     [Fact]

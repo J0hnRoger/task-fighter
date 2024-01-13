@@ -63,7 +63,7 @@ if (command is ListTaskRequest listTasksCommand)
     
     else if (result.Day.HasValue)
     {
-        AnsiConsole.MarkupLine($"[bold]Daily Todo: {result.Day.ToString()}[/]");
+        AnsiConsole.MarkupLine($"[bold]Daily Todo: {result.Day.ToString()} - Status: {(result.IsOpened ? "" : "Fermé")}[/]");
     }
     
     TaskFighterTable<TodoTask> table = new(result.Tasks, new List<string>()

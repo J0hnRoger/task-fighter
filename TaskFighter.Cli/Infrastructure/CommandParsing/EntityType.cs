@@ -17,7 +17,7 @@ public class EntityType
     public static EntityType EventType = new EntityType("Event", "e");
     public static EntityType WorkflowType = new EntityType("Workflow", "w");
     public static EntityType TimeBlock = new EntityType("TimeBlock", "tb");
-    public static EntityType DaySchedule = new EntityType("DaySchedule", "day");
+    public static EntityType DaySchedule = new EntityType("Day", "day");
     public static EntityType ConfigType = new EntityType("Config", "config");
     
     public static List<EntityType> AllTypes = new List<EntityType>()

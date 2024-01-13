@@ -20,6 +20,8 @@ public interface IFighterTaskContext
     public void Delete(TodoTask task);
 
     public void TackleToday(TodoTask task);
+    public void BackToBacklog(TodoTask returningTask);
+    public void Migrate(TodoTask migrateTask);
     
     void AddEvent(TodoEvent todoEvent);
     void UpdateEvent(TodoEvent todoEvent);
