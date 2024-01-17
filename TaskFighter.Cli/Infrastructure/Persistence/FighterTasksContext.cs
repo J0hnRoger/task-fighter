@@ -158,10 +158,22 @@ public class FighterTasksContext : IFighterTaskContext
     public void DeleteTask(int taskId)
     {
         var deletingTask = _backlog.Find(t => t.Id == taskId);
-        if (deletingTask == null)
-            throw new Exception($"Task Entity {taskId} doesn't exists");
-        _backlog.Remove(deletingTask);
-        _domainEvents.Add(TaskEvents.DeleteTaskEvent(deletingTask));
+
+        if (deletingTask != null)
+        {
+            _backlog.Remove(deletingTask);
+            return;
+            // _domainEvents.Add(TaskEvents.DeleteTaskEvent(deletingTask));
+        }
+        
+        deletingTask = _currentDay.Tasks.Find(t => t.Id == taskId);
+        if (deletingTask != null)
+        {
+            _currentDay.Tasks.Remove(deletingTask);
+            return;
+        }
+        
+        throw new Exception($"Task Entity {taskId} doesn't exists in Backlog or DailyTodo");
     }
 
     public void Update(TodoTask task)
