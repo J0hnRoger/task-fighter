@@ -12,6 +12,11 @@ public class TaskFighterConfig
     /// Fichier contenant toutes les tâches à réaliser (backlog)
     /// </summary>
     public string BackLogPath { get; set; }
+    
+    /// <summary>
+    /// Fichier contenant toutes les tâches terminées - pour du reporting
+    /// </summary>
+    public string CompletedPath { get; set; }
     public string CalendarPath { get; set; }
     public string LoggerPath { get; set; }
     public string Context { get; set; }

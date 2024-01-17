@@ -1,5 +1,4 @@
 ﻿using CSharpFunctionalExtensions;
-using Newtonsoft.Json;
 
 namespace TaskFighter.Infrastructure.Persistence;
 

@@ -50,11 +50,6 @@ public class CommandParser
         string valueLiteral = result.Groups[4].Value?.Trim();
         _currentCommand.Value = valueLiteral;
 
-        if (entityLiteral == null)
-        {
-            
-        }
-        
         Type requestType = _allRequestTypes.FirstOrDefault(t => t.Name == _currentCommand.GetRequestName());
         if (requestType == null)
             return new HelpRequest();

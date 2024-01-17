@@ -7,16 +7,11 @@ public record AddTaskRequest : IRequest<TodoTask>
     public string Context { get; set; }
     public string Name { get; set; }
     public string Area { get; set; }
-    
+    public string Project { get; set; }
+
     public AddTaskRequest(string serializedValue, string serializedFilters)
     {
-        int nearestModifier = (serializedValue.IndexOf("a:") < serializedValue.IndexOf("c:"))
-            ? serializedValue.IndexOf("a:")
-            : serializedValue.IndexOf("c:");
-
-        Name = (nearestModifier > -1)
-            ? serializedValue.Substring(0, nearestModifier).Trim()
-            : serializedValue.Trim();
+        Name = serializedValue.Trim();
 
         Area = serializedValue.Contains("a:")
             ? serializedValue.Split("a:")[1].Split(" ")[0]
@@ -25,6 +20,10 @@ public record AddTaskRequest : IRequest<TodoTask>
         Context = serializedValue.Contains("c:")
             ? serializedValue.Split("c:")[1].Split(" ")[0]
             : "perso";
+        
+        Project = serializedValue.Contains("p:") ? serializedValue.Split("p:")[1]
+            .Split(" ")[0] 
+            : "default";
     }
 }
 
@@ -43,6 +42,7 @@ public class CreateTaskCommandHandler : IRequestHandler<AddTaskRequest, TodoTask
         {
             Name = request.Name,
             Area = request.Area,
+            Project = request.Project, 
             Context =  request.Context,
             Status = TodoTaskStatus.BackLog
         };

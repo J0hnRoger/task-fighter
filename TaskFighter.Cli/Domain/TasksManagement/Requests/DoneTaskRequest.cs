@@ -33,9 +33,8 @@ public class DoneTaskRequestHandler : IRequestHandler<DoneTaskRequest, TodoTask>
             throw new Exception($"Task not found: {request.TaskId}");
         
         task.Finish(DateTime.Now);
-        
         _context.Update(task);
-        _context.SaveChanges();
+        _context.CompleteTask(task);
         return Task.FromResult(task);
    }
 }
