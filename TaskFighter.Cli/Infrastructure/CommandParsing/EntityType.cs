@@ -19,10 +19,11 @@ public class EntityType
     public static EntityType TimeBlock = new EntityType("TimeBlock", "tb");
     public static EntityType DaySchedule = new EntityType("Day", "day");
     public static EntityType ConfigType = new EntityType("Config", "config");
+    public static EntityType ReportType = new EntityType("Report", "report");
     
     public static List<EntityType> AllTypes = new List<EntityType>()
     {
-        TaskType, EventType, WorkflowType, TimeBlock, DaySchedule, ConfigType
+        TaskType, EventType, WorkflowType, TimeBlock, DaySchedule, ConfigType, ReportType
     };
 
     public static Result<EntityType> Get(string literal)

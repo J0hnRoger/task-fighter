@@ -2,7 +2,6 @@
 
 namespace TaskFighter.Domain.TasksManagement.Requests;
 
-
 public record DeleteTaskRequest : IRequest<Unit> 
 {
     public int TaskId  { get; set; }
