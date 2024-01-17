@@ -49,6 +49,7 @@ public class EndDayRequestHandler : IRequestHandler<EndDayRequest, Unit>
             }
         }
         
+        _context.DailyTodo.Shutdown(DateTime.Now);
         _context.SaveChanges();
         
         return Task.FromResult(new Unit());
