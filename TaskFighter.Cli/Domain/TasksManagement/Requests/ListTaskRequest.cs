@@ -39,8 +39,8 @@ public class ListTaskCommandHandler : IRequestHandler<ListTaskRequest, ListTodoT
             case "backlog":
                 tasks = _context.Backlog.ToList();
                 break;
-            case "all":
-                tasks = _context.Tasks.ToList();
+            case "tomorrow":
+                tasks = _context.Tomorrow.Tasks;
                 break;
             default:
                 tasks = _context.Tasks.Where(t => t.Status != TodoTaskStatus.Complete)

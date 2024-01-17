@@ -6,7 +6,8 @@ using TaskFighter.Domain.TasksManagement;
 
 namespace TaskFighter.Infrastructure.Persistence;
 
-public class FighterTasksContext : IFighterTaskContext
+
+public class FighterTasksContext : IFighterTaskContext 
 {
     private readonly TaskFighterConfig _dbConfig;
 
@@ -16,13 +17,15 @@ public class FighterTasksContext : IFighterTaskContext
     private DailyTodoLists _todoLists { get; set; }
     private List<TodoTask> _backlog { get; set; }
     private List<TodoEvent> _events { get; set; }
-
+    private List<TodoTask> _completed { get; set; }
+    
     public IReadOnlyList<TodoTask> Backlog => _backlog;
 
     public DailyTodoLists DailyTodoLists => _todoLists;
     public IReadOnlyList<TodoTask> Tasks => _currentDay.Tasks;
     public DailyTodo DailyTodo => _currentDay;
-
+    public DailyTodo Tomorrow => GetOrCreateTodoList(DateTime.Today.AddDays(1));
+    
     public IReadOnlyList<TodoEvent> Events => _events;
 
     public string Context => _dbConfig.Context;
@@ -36,11 +39,15 @@ public class FighterTasksContext : IFighterTaskContext
         _dbConfig = dbConfig;
 
         string backlogPath = Load(_dbConfig.BackLogPath);
+        string completedPath = Load(_dbConfig.CompletedPath);
         string dailyTodoPath = Load(_dbConfig.TodosPath);
 
         _backlog = JsonConvert.DeserializeObject<List<TodoTask>>(backlogPath
             , new TodoTaskStatusJsonConverter(typeof(TodoTaskStatus))) ?? new List<TodoTask>();
 
+        _completed = JsonConvert.DeserializeObject<List<TodoTask>>(completedPath
+            , new TodoTaskStatusJsonConverter(typeof(TodoTaskStatus))) ?? new List<TodoTask>();
+        
         _todoLists = JsonConvert.DeserializeObject<DailyTodoLists>(dailyTodoPath,
                          new TodoTaskStatusJsonConverter(typeof(TodoTaskStatus)))
                      ?? new DailyTodoLists();
@@ -119,6 +126,14 @@ public class FighterTasksContext : IFighterTaskContext
         // Remove from current day?
         _backlog.Add(returningTask);
     }
+    
+    public void CompleteTask(TodoTask completedTask)
+    {
+        completedTask.Status = TodoTaskStatus.Complete;
+        _currentDay.Tasks.Remove(completedTask);
+        _completed.Add(completedTask);
+        SaveChanges();
+    }
 
     public TodoTask AddTask(TodoTask newTask)
     {
@@ -174,6 +189,7 @@ public class FighterTasksContext : IFighterTaskContext
         LogEvents();
 
         File.WriteAllText(_dbConfig.BackLogPath, JsonConvert.SerializeObject(_backlog, Formatting.Indented));
+        File.WriteAllText(_dbConfig.CompletedPath, JsonConvert.SerializeObject(_completed, Formatting.Indented));
         File.WriteAllText(_dbConfig.TodosPath, JsonConvert.SerializeObject(_todoLists, Formatting.Indented));
     }
 

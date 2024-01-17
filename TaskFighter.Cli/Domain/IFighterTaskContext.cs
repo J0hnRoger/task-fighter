@@ -11,6 +11,7 @@ public interface IFighterTaskContext
     public IReadOnlyList<TodoTask> Backlog { get; }
     public DailyTodoLists DailyTodoLists { get; } 
     public DailyTodo DailyTodo { get; }
+    public DailyTodo Tomorrow { get; }
     
     TodoTask GetTask(int requestTaskId);
     public TodoTask AddTask(TodoTask newTask);
@@ -21,6 +22,7 @@ public interface IFighterTaskContext
 
     public void TackleToday(TodoTask task);
     public void BackToBacklog(TodoTask returningTask);
+    public void CompleteTask(TodoTask completedTask);
     public void Migrate(TodoTask migrateTask);
     
     void AddEvent(TodoEvent todoEvent);
