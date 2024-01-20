@@ -87,7 +87,8 @@ public class FighterTasksContext : IFighterTaskContext
         var dailyTodo = _todoLists.GetTodoList(day);
         if (dailyTodo == null)
         {
-            dailyTodo = new DailyTodo() {Date = day, Tasks = new List<TodoTask>(), Opened = false };
+            dailyTodo = new DailyTodo(_dbConfig.CurrentTodoListIndex) 
+                { Date = day, Tasks = new List<TodoTask>(), Opened = false };
             _todoLists.Days.Add(dailyTodo);
             File.WriteAllText(_dbConfig.TodosPath, JsonConvert.SerializeObject(_todoLists, Formatting.Indented));
         }
@@ -96,7 +97,7 @@ public class FighterTasksContext : IFighterTaskContext
 
     public TodoEvent AddEvent(TodoEvent newTodoEvent)
     {
-        newTodoEvent.Id = ++_dbConfig.CurrentIndex;
+        newTodoEvent.Id = ++_dbConfig.CurrentTaskIndex;
         _events.Add(newTodoEvent);
 
         _domainEvents.Add(CalendarEvents.CreateEventEvent(newTodoEvent));
@@ -139,7 +140,7 @@ public class FighterTasksContext : IFighterTaskContext
 
     public TodoTask AddTask(TodoTask newTask)
     {
-        newTask.Id = ++_dbConfig.CurrentIndex;
+        newTask.Id = ++_dbConfig.CurrentTaskIndex;
         if (String.IsNullOrWhiteSpace(newTask.Context))
             newTask.Context = _dbConfig.Context;
         newTask.Created = DateTime.Now;

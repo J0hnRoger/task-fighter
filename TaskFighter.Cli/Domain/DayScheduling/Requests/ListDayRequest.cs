@@ -4,7 +4,7 @@ using TaskFighter.Domain.Common;
 using TaskFighter.Domain.TasksManagement;
 
 namespace TaskFighter.Domain.DayScheduling.Requests;
-    
+
 public record ListDayRequest : IRequest<Unit>
 {
     public DateTime From { get; set; } = DateTime.MinValue;
@@ -28,15 +28,15 @@ public class ListDayRequestHandler : IRequestHandler<ListDayRequest, Unit>
     public Task<Unit> Handle(ListDayRequest request, CancellationToken cancellationToken)
     {
         var openedTodoLists = _context.DailyTodoLists.GetOpenedTodoLists(request.From);
-        
+
         if (!openedTodoLists.Any())
         {
             AnsiConsole.WriteLine("No Opened TodoLists");
             return Task.FromResult(new Unit());
         }
-        
+
         DisplayTodoLists(openedTodoLists);
-        
+
         return Task.FromResult(new Unit());
     }
 
@@ -46,12 +46,13 @@ public class ListDayRequestHandler : IRequestHandler<ListDayRequest, Unit>
 
         foreach (var list in todoLists)
         {
-            var node = tree.AddNode(list.Date.ToString("d"));
+            var node = tree.AddNode($"[bold yellow]{list.Id}[/] {list.Date:d}");
             foreach (var task in list.Tasks)
             {
-                node.AddNode(task.Name);
+                node.AddNode(task.ToString());
             }
         }
 
         AnsiConsole.Write(tree);
-    }}
+    }
+}

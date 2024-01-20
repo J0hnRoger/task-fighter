@@ -130,7 +130,7 @@ public class TaskFighterTests
         
         TaskFighterConfig config = new TaskFighterConfig()
         {
-           CurrentIndex = 0,
+           CurrentTaskIndex = 0,
            ConfigPath = configDir + "test.config.json",
            TodosPath =  configDir + "tasks.json", 
            CalendarPath =  configDir + "calendar.json", 
@@ -209,7 +209,7 @@ public class TaskFighterTests
         string configContent = File.ReadAllText(testConfigPath);
         configContent.Should().NotBeNullOrEmpty();
         TaskFighterConfig config = JsonConvert.DeserializeObject<TaskFighterConfig>(configContent);
-        config.CurrentIndex = 0;
+        config.CurrentTaskIndex = 0;
         File.WriteAllText(config.BackLogPath, "[]");
         
         FighterTasksContext fighterTasksContext = new(config);

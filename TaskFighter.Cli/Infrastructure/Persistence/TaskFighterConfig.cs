@@ -2,7 +2,8 @@
 
 public class TaskFighterConfig
 {
-    public int CurrentIndex { get; set; }
+    public int CurrentTaskIndex { get; set; }
+    public int CurrentTodoListIndex { get; set; }
     public string ConfigPath { get; set; }
     /// <summary>
     /// Fichier contenant les tâches à réaliser dans la journée/semaine

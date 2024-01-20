@@ -64,9 +64,9 @@ public class TodoTask : Entity, ITableRenderable
         };
     }
 
-    public void Finish(DateTime endDate)
+    public void Finish(DateTime endDate, bool force = false)
     {
-        if (Status != TodoTaskStatus.Active)
+        if (!force && Status != TodoTaskStatus.Active)
             throw new Exception($"Asked task {Id} not active");
         Status = TodoTaskStatus.Complete;
         EndDate = endDate;

@@ -14,7 +14,7 @@ public class TestHelpers
         TaskFighterConfig config = JsonConvert.DeserializeObject<TaskFighterConfig>(configContent);
         
         // CleanUp 
-        config.CurrentIndex = 0;
+        config.CurrentTaskIndex = 0;
         File.WriteAllText(config.TodosPath,"[]");
         File.WriteAllText(config.BackLogPath,"[]" );
         File.WriteAllText(config.CalendarPath,"[]"  );
