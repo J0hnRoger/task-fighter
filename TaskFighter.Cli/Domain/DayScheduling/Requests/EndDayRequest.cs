@@ -1,14 +1,17 @@
 ﻿using MediatR;
 using Spectre.Console;
-using TaskFighter.Domain.DayReporting;
 using TaskFighter.Domain.TasksManagement;
-using TaskFighter.Infrastructure.Persistence;
 
 namespace TaskFighter.Domain.DayScheduling.Requests;
     
 public record EndDayRequest : IRequest<Unit>
 {
-    public EndDayRequest(string values, string filters) { }
+    public DateTime From { get; set; }
+    
+    public EndDayRequest(string values, string filters)
+    {
+
+    }
 }
 
 public class EndDayRequestHandler : IRequestHandler<EndDayRequest, Unit>

@@ -72,7 +72,7 @@ public class FighterTasksContext : IFighterTaskContext
     {
         _dbConfig.Context = context.ToLower();
     }
-
+    
     public void Migrate(TodoTask migrateTask)
     {
         var tomorrow = DateTime.Today.AddDays(1);

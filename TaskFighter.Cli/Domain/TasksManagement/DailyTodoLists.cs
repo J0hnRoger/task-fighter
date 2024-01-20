@@ -13,6 +13,11 @@ public class DailyTodoLists
     {
        return Days.FirstOrDefault(d => d.Date == date); 
     }
+    
+    public List<DailyTodo> GetOpenedTodoLists(DateTime from)
+    {
+       return Days.Where(d => d.IsClosed == false && d.Date > from).ToList(); 
+    }
 }
 
 public class DailyTodo
