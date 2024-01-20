@@ -22,6 +22,8 @@ public class DailyTodo
     public bool Opened { get; set; }
     public DateTime ClosedDate { get; set; }
 
+    public bool IsClosed => ClosedDate != DateTime.MinValue 
+                            && (DateTime.Now > ClosedDate);
     public List<TodoTask> GetNotFinishedTasks()
     {
         return Tasks.Where(t => t.Status != TodoTaskStatus.Complete).ToList();
@@ -29,13 +31,6 @@ public class DailyTodo
 
     public void Shutdown(DateTime closedDate)
     {
-        var notFinishedTasks = Tasks
-            .Where(t => t.Status != TodoTaskStatus.Complete)
-            .ToList();
-        
-        if (notFinishedTasks.Any())
-            throw new Exception($"Not finished tasks: {string.Join(",", notFinishedTasks.Select(t => t.Id + " - " + t.Name))}");
-        
         ClosedDate = closedDate;
     }
 }

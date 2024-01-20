@@ -12,7 +12,7 @@ public interface IFighterTaskContext
     public DailyTodoLists DailyTodoLists { get; } 
     public DailyTodo DailyTodo { get; }
     public DailyTodo Tomorrow { get; }
-    
+   
     TodoTask GetTask(int requestTaskId);
     public TodoTask AddTask(TodoTask newTask);
 

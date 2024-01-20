@@ -6,13 +6,13 @@ using TaskFighter.Domain.TasksManagement;
 
 namespace TaskFighter.Infrastructure.Persistence;
 
-
 public class FighterTasksContext : IFighterTaskContext 
 {
     private readonly TaskFighterConfig _dbConfig;
 
     private readonly List<BaseEvent<Entity>> _domainEvents = new();
     private readonly DailyTodo _currentDay;
+    private readonly DailyTodo _tomorrow;
 
     private DailyTodoLists _todoLists { get; set; }
     private List<TodoTask> _backlog { get; set; }
@@ -24,7 +24,7 @@ public class FighterTasksContext : IFighterTaskContext
     public DailyTodoLists DailyTodoLists => _todoLists;
     public IReadOnlyList<TodoTask> Tasks => _currentDay.Tasks;
     public DailyTodo DailyTodo => _currentDay;
-    public DailyTodo Tomorrow => GetOrCreateTodoList(DateTime.Today.AddDays(1));
+    public DailyTodo Tomorrow => _tomorrow;
     
     public IReadOnlyList<TodoEvent> Events => _events;
 
@@ -54,9 +54,10 @@ public class FighterTasksContext : IFighterTaskContext
 
         var today = DateTime.Today;
 
-        var dailyTodo = GetOrCreateTodoList(today);
-        _currentDay = dailyTodo;
-
+        
+        _currentDay = GetOrCreateTodoList(today);;
+        _tomorrow = GetOrCreateTodoList(today.AddDays(1));
+        
         string calendarFileContent = Load(_dbConfig.CalendarPath);
         _events = JsonConvert.DeserializeObject<List<TodoEvent>>(calendarFileContent) ?? new List<TodoEvent>();
     }
@@ -125,6 +126,7 @@ public class FighterTasksContext : IFighterTaskContext
         returningTask.Status = TodoTaskStatus.BackLog;
         // Remove from current day?
         _backlog.Add(returningTask);
+        SaveChanges(); 
     }
     
     public void CompleteTask(TodoTask completedTask)

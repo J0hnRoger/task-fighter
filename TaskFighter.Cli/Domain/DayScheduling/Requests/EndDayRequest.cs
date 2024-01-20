@@ -22,6 +22,12 @@ public class EndDayRequestHandler : IRequestHandler<EndDayRequest, Unit>
 
     public Task<Unit> Handle(EndDayRequest request, CancellationToken cancellationToken)
     {
+        if (_context.DailyTodo.IsClosed)
+        {
+            AnsiConsole.WriteLine("You already closed your day. Go rest for today.");
+            return Task.FromResult(new Unit());
+        }
+        
         var notFinishedTasks = _context.DailyTodo.GetNotFinishedTasks();
         if (notFinishedTasks.Count == 0)
         {
