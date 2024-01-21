@@ -2,12 +2,13 @@
 using Microsoft.Extensions.Configuration;
 using Spectre.Console;
 using Spectre.Console.Json;
+using TaskFighter.Infrastructure.CommandParsing;
 
 namespace TaskFighter.Infrastructure.Configuration;
 
 public record ShowConfigRequest : IRequest<Unit>
 {
-    public ShowConfigRequest(string value, string filters) { }
+    public ShowConfigRequest(string value, Filters filters) { }
 
     public override string ToString()
     {

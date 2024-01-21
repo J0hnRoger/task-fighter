@@ -2,6 +2,7 @@
 using Spectre.Console;
 using TaskFighter.Domain.Common;
 using TaskFighter.Domain.TasksManagement;
+using TaskFighter.Infrastructure.CommandParsing;
 
 namespace TaskFighter.Domain.DayScheduling.Requests;
 
@@ -9,9 +10,9 @@ public record ListDayRequest : IRequest<Unit>
 {
     public DateTime From { get; set; } = DateTime.MinValue;
 
-    public ListDayRequest(string values, string filters)
+    public ListDayRequest(string values, Filters filters)
     {
-        if (filters.Contains("week"))
+        if (filters.Raw.Contains("week"))
             From = DateUtilities.GetFirstDayOfWeek();
     }
 }

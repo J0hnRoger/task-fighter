@@ -5,7 +5,7 @@ public class Command
 {
     public EntityType Entity { get; set; }
     public VerbType Verb { get; set; }
-    public string Filter { get; set; }
+    public Filters Filter { get; set; }
     public string Value { get; set; }
 
     public string GetRequestName()

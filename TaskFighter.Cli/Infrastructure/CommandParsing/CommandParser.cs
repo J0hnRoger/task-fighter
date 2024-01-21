@@ -15,7 +15,8 @@ public class CommandParser
     private IBaseRequest _request;
     private Command _currentCommand;
 
-    public static string commandParsingRegex = $@"(\w*) (\S* )*\b({String.Join("|", VerbType.AllTypes.Select(vt => vt.Name.ToLower()))})\b( .*)*";
+    // Fix the folowing regex for capture all text between the first group and the third group
+    public static readonly string commandParsingRegex = $@"(\w*) (.* )*\b({String.Join("|", VerbType.AllTypes.Select(vt => vt.Name.ToLower()))})\b( .*)*";
 
     public CommandParser(List<Type> allRequestTypes)
     {
@@ -41,8 +42,8 @@ public class CommandParser
             throw new Exception(parsedEntityResult.Error);
         _currentCommand.Entity = parsedEntityResult.Value;
         
-        string filtersLiteral = result.Groups[2].Value?.Trim();        
-        _currentCommand.Filter = filtersLiteral;
+        string filtersLiteral = result.Groups[2].Value?.Trim(); 
+        _currentCommand.Filter = new Filters(filtersLiteral);
         
         string verbLiteral = result.Groups[3].Value?.Trim();        
         _currentCommand.Verb = VerbType.Get(verbLiteral);

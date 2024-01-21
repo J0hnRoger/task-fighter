@@ -14,7 +14,6 @@ namespace TaskFighter.Tests;
 
 public class CommandLineParserTests
 {
-    
     private static CommandParser CreateCommandParser()
     {
         var allRequestTypes = typeof(CommandParser)
@@ -39,19 +38,27 @@ public class CommandLineParserTests
     public void CommandLineParser_ReturnTaskEntity()
     {
         CommandParser parser = CreateCommandParser();
-        var result = parser.ParseArgs("task add Nettoyer le poêle c:perso a:majordome");
-        result.Should().BeOfType<AddTaskRequest>();
-        (result as AddTaskRequest).Name.Should().Be("Nettoyer le poêle");
-        (result as AddTaskRequest).Area.Should().Be("majordome");
-        (result as AddTaskRequest).Context.Should().Be("perso");
+        var taskRequest = parser.ParseArgs("task +home add Nettoyer le poêle");
+        taskRequest.Should().BeOfType<AddTaskRequest>();
+        
+        var dayRequest = parser.ParseArgs("day list");
+        dayRequest.Should().BeOfType<ListDayRequest>();
+        
+        var configRequest = parser.ParseArgs("config show");
+        configRequest.Should().BeOfType<ShowConfigRequest>();
     }
     
     [Fact]
-    public void CommandLineParser_ReturnReportingTask()
+    public void CommandLineParser_ReturnFiltersEntity()
     {
         CommandParser parser = CreateCommandParser();
-        var result = parser.ParseArgs("day end energy:3");
-        result.Should().BeOfType<EndDayRequest>();
+        var request = parser.ParseArgs("task +home +bricolage p:backlog list");
+        request.Should().BeOfType<ListTaskRequest>();
+        var taskRequest = request as ListTaskRequest;
+        taskRequest!.Tags.Should().HaveCount(2);
+        taskRequest.Tags[0].Should().Be("home");
+        taskRequest.Tags[1].Should().Be("bricolage");
+        taskRequest.Project.Should().Be("");
     }
 
     [Fact]

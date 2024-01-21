@@ -1,11 +1,12 @@
 ﻿using MediatR;
+using TaskFighter.Infrastructure.CommandParsing;
 
 namespace TaskFighter.Domain.EventsManagement.Requests;
 
 public class UpdateEventRequest : IRequest<TodoEvent>
 {
 
-    public UpdateEventRequest(string value, string filter)
+    public UpdateEventRequest(string value, Filters filter)
     {
     }
 

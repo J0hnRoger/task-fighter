@@ -1,16 +1,19 @@
 ﻿using MediatR;
+using TaskFighter.Infrastructure.CommandParsing;
 using TaskFighter.Infrastructure.Persistence;
 
 namespace TaskFighter.Domain.TasksManagement.Requests;
 public record AddTaskRequest : IRequest<TodoTask>
 {
+    public List<string> Tags { get; set; }
     public string Context { get; set; }
     public string Name { get; set; }
     public string Area { get; set; }
     public string Project { get; set; }
 
-    public AddTaskRequest(string serializedValue, string serializedFilters)
+    public AddTaskRequest(string serializedValue, Filters filters)
     {
+        Tags = filters.Tags; 
         Name = serializedValue.Trim();
 
         Area = serializedValue.Contains("a:")
@@ -44,10 +47,14 @@ public class CreateTaskCommandHandler : IRequestHandler<AddTaskRequest, TodoTask
             Area = request.Area,
             Project = request.Project, 
             Context =  request.Context,
-            Status = TodoTaskStatus.BackLog
+            Status = TodoTaskStatus.BackLog,
+            Tags = request.Tags
         };
 
-        _context.AddTask(task);
+        if (!_context.DailyTodo.IsClosed)
+            _context.AddTaskInDailyTodo(task);
+        else
+            _context.AddTask(task);
         _context.SaveChanges();
         return Task.FromResult(task);
     }

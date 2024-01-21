@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using TaskFighter.Domain.TasksManagement;
+using TaskFighter.Infrastructure.CommandParsing;
 using TaskFighter.Infrastructure.Persistence;
 
 namespace TaskFighter.Domain.DayScheduling.Requests;
@@ -8,7 +9,7 @@ public record PlanDayScheduleRequest : IRequest<DaySchedule>
 {
     public DateTime CurrentDay { get; set; }
 
-    public PlanDayScheduleRequest(string serializedValue, string serializedFilters)
+    public PlanDayScheduleRequest(string serializedValue, Filters filters)
     {
     }
 }

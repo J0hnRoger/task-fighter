@@ -1,7 +1,9 @@
-﻿using System.Threading;
+﻿using System.Runtime.InteropServices.ComTypes;
+using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using TaskFighter.Domain.DayScheduling.Requests;
+using TaskFighter.Infrastructure.CommandParsing;
 using TaskFighter.Infrastructure.Persistence;
 using Xunit;
 
@@ -14,7 +16,7 @@ public class DayRequestTests
     {
         FighterTasksContext fighterTasksContext = TestHelpers.CreateTestContext();
         var handler = new PlanDayScheduleRequestHandler(fighterTasksContext);
-        var result = await handler.Handle(new PlanDayScheduleRequest("", "")
+        var result = await handler.Handle(new PlanDayScheduleRequest("", new Filters(""))
             , CancellationToken.None);
         
         result.TimeBlocks.Count.Should().Be(7);
@@ -26,7 +28,7 @@ public class DayRequestTests
     {
         FighterTasksContext fighterTasksContext = TestHelpers.CreateTestContext();
         var handler = new StartDayScheduleRequestHandler(fighterTasksContext);
-        var result = await handler.Handle(new StartDayScheduleRequest("test des notes energy:3", "")
+        var result = await handler.Handle(new StartDayScheduleRequest("test des notes energy:3", new Filters(""))
             , CancellationToken.None);
     }
     
@@ -35,7 +37,7 @@ public class DayRequestTests
     {
         FighterTasksContext fighterTasksContext = TestHelpers.CreateTestContext();
         var handler = new EndDayRequestHandler(fighterTasksContext);
-        var result = await handler.Handle(new EndDayRequest("test des notes energy:3", "")
+        var result = await handler.Handle(new EndDayRequest("test des notes energy:3", new Filters(""))
             , CancellationToken.None);
          
     }

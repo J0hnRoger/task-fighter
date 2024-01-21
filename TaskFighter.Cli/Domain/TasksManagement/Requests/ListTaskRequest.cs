@@ -1,19 +1,20 @@
 ﻿using MediatR;
+using TaskFighter.Infrastructure.CommandParsing;
 using TaskFighter.Infrastructure.Persistence;
 
 namespace TaskFighter.Domain.TasksManagement.Requests;
 
 public record ListTaskRequest : IRequest<ListTodoTaskViewModel>
 {
-    public string Filters { get; set; }
+    public List<string> Tags { get; set; }
     public string Project { get; set; }
 
-    public ListTaskRequest(string value, string filters)
+    public ListTaskRequest(string value, Filters filters)
     {
-        if (filters.StartsWith("p:"))
-            Project = filters.Split("p:")[1]; 
-            
-        Filters = filters;
+        // if (filters.StartsWith("p:"))
+        //     Project = filters.Split("p:")[1]; 
+        
+        Tags = filters.Tags;
     }
 
     public override string ToString()
@@ -36,15 +37,18 @@ public class ListTaskCommandHandler : IRequestHandler<ListTaskRequest, ListTodoT
         List<TodoTask> tasks = new();
         switch (request.Project)
         {
-            case "backlog":
-                tasks = _context.Backlog.ToList();
+            case "today":
+                tasks = _context.Tasks.Where(t => t.Status != TodoTaskStatus.Complete)
+                    .ToList();
                 break;
             case "tomorrow":
                 tasks = _context.Tomorrow.Tasks;
                 break;
+            case "all":
+                tasks = _context.DailyTodo.Tasks;
+                break;
             default:
-                tasks = _context.Tasks.Where(t => t.Status != TodoTaskStatus.Complete)
-                    .ToList();
+                tasks = _context.Backlog.ToList();
                 break;
         }
 

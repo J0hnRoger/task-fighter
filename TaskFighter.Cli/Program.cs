@@ -99,7 +99,6 @@ catch (Exception ex)
     AnsiConsole.WriteException(ex, ExceptionFormats.ShortenEverything);
 }
 
-
 /// <summary>
 /// Récupération des données de configuration
 /// </summary>

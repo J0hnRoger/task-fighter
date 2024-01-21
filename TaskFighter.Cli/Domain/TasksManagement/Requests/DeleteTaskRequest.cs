@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using TaskFighter.Infrastructure.CommandParsing;
 
 namespace TaskFighter.Domain.TasksManagement.Requests;
 
@@ -6,7 +7,7 @@ public record DeleteTaskRequest : IRequest<Unit>
 {
     public int TaskId  { get; set; }
     
-    public DeleteTaskRequest(string value, string filter)
+    public DeleteTaskRequest(string value, Filters filter)
     {
         TaskId = int.Parse(value);
     }

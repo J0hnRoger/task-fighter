@@ -1,11 +1,12 @@
 ﻿using MediatR;
 using Spectre.Console;
+using TaskFighter.Infrastructure.CommandParsing;
 
 namespace TaskFighter.Domain.TasksManagement.Requests;
 
 public record PlanTaskRequest : IRequest<List<TodoTask>>
 {
-    public PlanTaskRequest(string value, string filters)
+    public PlanTaskRequest(string value, Filters filters)
     {
     }
 }

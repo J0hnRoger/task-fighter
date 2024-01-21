@@ -1,13 +1,14 @@
 ﻿using MediatR;
 using Spectre.Console;
 using TaskFighter.Domain.TasksManagement;
+using TaskFighter.Infrastructure.CommandParsing;
 using TaskFighter.Infrastructure.Persistence;
 
 namespace TaskFighter.Domain.DayReporting.Requests;
 
 public record ShowReportRequest : IRequest
 {
-    public ShowReportRequest(string value, string filters)
+    public ShowReportRequest(string value, Filters filters)
     {
     }
 }

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using TaskFighter.Infrastructure.CommandParsing;
 using TaskFighter.Infrastructure.Persistence;
 
 namespace TaskFighter.Domain.TasksManagement.Requests;
@@ -10,7 +11,7 @@ public record BatchTaskRequest : IRequest<List<TodoTask>>
 {
     public string BatchFile { get; set; }
     
-    public BatchTaskRequest(string value, string filter)
+    public BatchTaskRequest(string value, Filters filter)
     {
         BatchFile = value;
     }

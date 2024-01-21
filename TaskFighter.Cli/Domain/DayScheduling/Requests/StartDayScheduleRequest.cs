@@ -1,13 +1,12 @@
 ﻿using MediatR;
+using TaskFighter.Infrastructure.CommandParsing;
 
 namespace TaskFighter.Domain.DayScheduling.Requests;
     
 public record StartDayScheduleRequest : IRequest<Unit>
 {
-    public StartDayScheduleRequest(string serializedValue, string serializedFilters)
-    {
-    
-    }
+    public StartDayScheduleRequest(string serializedValue, Filters filters)
+    { }
 }
 
 public class StartDayScheduleRequestHandler : IRequestHandler<StartDayScheduleRequest, Unit>

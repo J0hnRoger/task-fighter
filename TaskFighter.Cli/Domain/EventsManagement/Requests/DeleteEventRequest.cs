@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using TaskFighter.Infrastructure.CommandParsing;
 
 namespace TaskFighter.Domain.EventsManagement.Requests;
 
@@ -7,9 +8,9 @@ public record DeleteEventRequest : IRequest<Unit>
 {
     public int EventId  { get; set; }
     
-    public DeleteEventRequest(string value, string filter)
+    public DeleteEventRequest(string value, Filters filter)
     {
-        EventId = int.Parse(filter);
+        EventId = int.Parse(filter.Raw);
     }
     
     public override string ToString()

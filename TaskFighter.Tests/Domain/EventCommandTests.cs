@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using FluentAssertions;
 using TaskFighter.Domain.TasksManagement.Requests;
+using TaskFighter.Infrastructure.CommandParsing;
 using TaskFighter.Infrastructure.Persistence;
 using Xunit;
 
@@ -14,7 +15,7 @@ public class EventCommandTests
     {
         FighterTasksContext fighterTasksContext = TestHelpers.CreateTestContext();
         var handler = new CreateTaskCommandHandler(fighterTasksContext);
-        var result = await handler.Handle(new AddTaskRequest("Test Task", "a:test")
+        var result = await handler.Handle(new AddTaskRequest("Test Task", new Filters("a:test"))
             , CancellationToken.None);
 
         result.Id.Should().BeGreaterThan(0);
@@ -25,7 +26,7 @@ public class EventCommandTests
     {
         FighterTasksContext fighterTasksContext = TestHelpers.CreateTestContext();
         var handler = new CreateTaskCommandHandler(fighterTasksContext);
-        var result = await handler.Handle(new AddTaskRequest("Test Task", "a:test")
+        var result = await handler.Handle(new AddTaskRequest("Test Task", new Filters("a:test"))
             , CancellationToken.None);
 
         result.Id.Should().BeGreaterThan(0);
@@ -37,14 +38,14 @@ public class EventCommandTests
         FighterTasksContext fighterTasksContext = TestHelpers.CreateTestContext();
         var handler = new CreateTaskCommandHandler(fighterTasksContext);
         
-        var result = await handler.Handle(new AddTaskRequest("Test Task", "a:test")
+        var result = await handler.Handle(new AddTaskRequest("Test Task", new Filters("a:test"))
             , CancellationToken.None);
 
         var startTaskHandler = new StartTaskRequestHandler(fighterTasksContext);
-        var startResult = await startTaskHandler.Handle(new StartTaskRequest("", result.Id.ToString()), CancellationToken.None); 
+        var startResult = await startTaskHandler.Handle(new StartTaskRequest("", new Filters(result.Id.ToString())), CancellationToken.None); 
         
         var endTaskHandler = new DoneTaskRequestHandler(fighterTasksContext);
-        var endResult = await endTaskHandler.Handle(new DoneTaskRequest("", result.Id.ToString()), CancellationToken.None); 
+        var endResult = await endTaskHandler.Handle(new DoneTaskRequest("", new Filters(result.Id.ToString())), CancellationToken.None); 
         
         result.Id.Should().Be(1);
         result.Status.Should().Be(TodoTaskStatus.Complete);
@@ -55,7 +56,7 @@ public class EventCommandTests
     {
         FighterTasksContext fighterTasksContext = TestHelpers.CreateTestContext();
         var handler = new CreateTaskCommandHandler(fighterTasksContext);
-        var result = await handler.Handle(new AddTaskRequest("Test Task", "a:test")
+        var result = await handler.Handle(new AddTaskRequest("Test Task", new Filters("a:test"))
             , CancellationToken.None);
         result.Id.Should().BeGreaterThan(0);
     }

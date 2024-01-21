@@ -50,6 +50,7 @@ public class TodoTask : Entity, ITableRenderable
             Name,
             Status?.Value ?? TodoTaskStatus.BackLog.Value,
             Project,
+            string.Join(", ", Tags),
             Context,
             GetAge(DateTime.Now),
             Description ?? "",

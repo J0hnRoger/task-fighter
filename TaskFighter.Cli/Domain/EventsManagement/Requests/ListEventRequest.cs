@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using TaskFighter.Infrastructure.CommandParsing;
 
 namespace TaskFighter.Domain.EventsManagement.Requests;
 
@@ -6,9 +7,8 @@ public record ListEventRequest : IRequest<List<TodoEvent>>
 {
     public string Filters { get; set; }
 
-    public ListEventRequest(string value, string filters)
+    public ListEventRequest(string value, Filters filters)
     {
-        Filters = filters;
     }
 
     public override string ToString()

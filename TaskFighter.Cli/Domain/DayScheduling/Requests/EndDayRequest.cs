@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Spectre.Console;
 using TaskFighter.Domain.TasksManagement;
+using TaskFighter.Infrastructure.CommandParsing;
 
 namespace TaskFighter.Domain.DayScheduling.Requests;
 
@@ -8,9 +9,9 @@ public record EndDayRequest : IRequest<Unit>
 {
     public int? TodoListId { get; set; }
 
-    public EndDayRequest(string values, string filters)
+    public EndDayRequest(string values, Filters filters)
     {
-        if (int.TryParse(filters, out int todoListId))
+        if (int.TryParse(filters.Raw, out int todoListId))
             TodoListId = todoListId;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using TaskFighter.Infrastructure.CommandParsing;
 using TaskFighter.Infrastructure.Persistence;
 
 namespace TaskFighter.Domain.TasksManagement.Requests;
@@ -7,9 +8,9 @@ public class StartTaskRequest : IRequest<TodoTask>
 {
     public int TaskId { get; set; }
 
-    public StartTaskRequest(string value, string filter)
+    public StartTaskRequest(string value, Filters filter)
     {
-        TaskId = int.Parse(value);
+        TaskId = int.Parse(filter.Raw);
     }
 
     public override string ToString()
