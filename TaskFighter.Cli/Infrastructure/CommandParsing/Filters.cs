@@ -5,8 +5,8 @@ namespace TaskFighter.Infrastructure.CommandParsing;
 public class Filters
 {
     public string Raw { get; }
+    public List<string> SpecialTags { get; } = new();
     public List<string> Tags { get; set; } = new();
-    public Dictionary<string, string> PropertiesFilter { get; set; } = new();
     
     // public static string tagsRegex = $@"(?<tags>(\+[\w]+)*)";
     public static string tagsRegex = $@"(?<tags>\+([\w]+)*)";
@@ -18,7 +18,11 @@ public class Filters
 
         foreach (Match resultGroup in tagResult)
         {
-            Tags.Add(resultGroup.Groups[1].Value.Trim());
+            var tag = resultGroup.Groups[1].Value.Trim();
+            if (Domain.TasksManagement.Tags.SpecialTags.Contains(tag))
+                SpecialTags.Add(tag);
+            else 
+                Tags.Add(tag);
         }
 
         Tags = Tags.Distinct().ToList();

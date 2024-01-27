@@ -13,15 +13,19 @@ public class TaskFighterConfig
     /// Fichier contenant toutes les tâches à réaliser (backlog)
     /// </summary>
     public string BackLogPath { get; set; }
-    
-    /// <summary>
-    /// Fichier contenant toutes les tâches terminées - pour du reporting
-    /// </summary>
-    public string CompletedPath { get; set; }
     public string CalendarPath { get; set; }
     public string LoggerPath { get; set; }
     public string Context { get; set; }
+    
+    public List<string> AllContexts { get; set; }
 
+    public void InitPaths()
+    {
+        BackLogPath = BackLogPath.Replace("{context}", Context);
+        TodosPath = TodosPath.Replace("{context}", Context);
+        CalendarPath = CalendarPath.Replace("{context}", Context);
+    }
+    
     public string GetBasePath()
     {
         int lastSlash = ConfigPath.LastIndexOf("/", StringComparison.Ordinal);

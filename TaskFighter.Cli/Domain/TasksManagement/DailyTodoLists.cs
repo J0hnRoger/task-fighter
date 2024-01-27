@@ -48,6 +48,7 @@ public class DailyTodo
 
     public void Shutdown(DateTime closedDate)
     {
+        Opened = false;
         ClosedDate = closedDate;
     }
 }

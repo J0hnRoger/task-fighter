@@ -1,19 +1,20 @@
 ﻿using MediatR;
+using Spectre.Console;
 using TaskFighter.Infrastructure.CommandParsing;
-using TaskFighter.Infrastructure.Persistence;
+using TaskFighter.Infrastructure.Renderer;
 
 namespace TaskFighter.Domain.TasksManagement.Requests;
 
-public record ListTaskRequest : IRequest<ListTodoTaskViewModel>
+public record ListTaskRequest : IRequest
 {
     public List<string> Tags { get; set; }
     public string Project { get; set; }
 
     public ListTaskRequest(string value, Filters filters)
     {
-        // if (filters.StartsWith("p:"))
-        //     Project = filters.Split("p:")[1]; 
-        
+        if (filters.Raw.Contains("p:"))
+            Project = filters.Raw.Split("p:")[1];
+
         Tags = filters.Tags;
     }
 
@@ -23,7 +24,7 @@ public record ListTaskRequest : IRequest<ListTodoTaskViewModel>
     }
 }
 
-public class ListTaskCommandHandler : IRequestHandler<ListTaskRequest, ListTodoTaskViewModel>
+public class ListTaskCommandHandler : IRequestHandler<ListTaskRequest>
 {
     private readonly IFighterTaskContext _context;
 
@@ -32,40 +33,66 @@ public class ListTaskCommandHandler : IRequestHandler<ListTaskRequest, ListTodoT
         _context = context;
     }
 
-    public Task<ListTodoTaskViewModel> Handle(ListTaskRequest request, CancellationToken cancellationToken)
+    public Task<Unit> Handle(ListTaskRequest request, CancellationToken cancellationToken)
     {
-        List<TodoTask> tasks = new();
-        switch (request.Project)
-        {
-            case "today":
-                tasks = _context.Tasks.Where(t => t.Status != TodoTaskStatus.Complete)
-                    .ToList();
-                break;
-            case "tomorrow":
-                tasks = _context.Tomorrow.Tasks;
-                break;
-            case "all":
-                tasks = _context.DailyTodo.Tasks;
-                break;
-            default:
-                tasks = _context.Backlog.ToList();
-                break;
-        }
+        List<TodoTask> tasks = _context.Backlog.ToList();
+        
+        DisplayTodoList(tasks);
 
-        var result = new ListTodoTaskViewModel() {Project = request.Project, Tasks = tasks};
-        if (request.Project != "backlog")
-        {
-            result.Day = _context.DailyTodo.Date;
-            result.IsOpened = _context.DailyTodo.Opened;
-        }
-        return  Task.FromResult(result);
+        string filterOption = AnsiConsole.Ask<string>(
+            "(f)ilter or (q)uit");
+        
+        if (filterOption == "f")
+            DisplayInteractiveTodoList(tasks);
+
+        return Task.FromResult(new Unit());
     }
-}
 
-public class ListTodoTaskViewModel
-{
-    public string Project { get; set; }
-    public List<TodoTask> Tasks { get; set; }
-    public DateTime? Day { get; set; }
-    public bool IsOpened { get; set; }
+    private void DisplayTodoList(List<TodoTask> tasks)
+    {
+        var rule = new Rule($"[bold yellow on blue]{_context.Context}[/] [red]BackLog[/]");
+        AnsiConsole.Write(rule);
+
+        TaskFighterTable<TodoTask> table = new(tasks, new List<string>()
+        {
+            "Id",
+            "Name",
+            "Status",
+            "Project",
+            "Tags"
+        });
+        AnsiConsole.Write(table.Table);
+    }
+
+    internal class FilterOptions
+    {
+        public DateTime? Date { get; set; }
+        public string Contains { get; set; }
+    }
+
+    private void DisplayInteractiveTodoList(List<TodoTask> tasks)
+    {
+        var filterOptions = new FilterOptions();
+        var filteredTasks = tasks; 
+        while (true)
+        {
+            Console.Clear();
+            
+            DisplayTodoList(filteredTasks);
+            
+            AnsiConsole.Write(new Rule("[yellow]Filtres de Tâches[/]").RuleStyle("grey"));
+
+            filterOptions.Contains = AnsiConsole.Ask<string>("Search task contains (a for all): ");
+
+            // Filtrer et afficher les tâches
+            filteredTasks = (filterOptions.Contains != "a")
+                ? tasks.Where(t => t.Name.Contains(filterOptions.Contains)).ToList()
+                : tasks;
+
+            DisplayTodoList(filteredTasks);
+            
+            if (filterOptions.Contains == "q")
+                break;
+        }
+    }
 }

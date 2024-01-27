@@ -3,14 +3,14 @@ using TaskFighter.Infrastructure.CommandParsing;
 
 namespace TaskFighter.Domain.TasksManagement.Requests;
 
-public record DeleteTaskRequest : IRequest<Unit> 
+public record DeleteTaskRequest : IRequest<Unit>
 {
-    public int TaskId  { get; set; }
-    
+    public int TaskId { get; set; }
+
     public DeleteTaskRequest(string value, Filters filter)
     {
-        TaskId = int.Parse(value);
-    }
+        TaskId = int.Parse(filter.Raw);
+    } 
     
     public override string ToString()
     {
@@ -26,11 +26,11 @@ public class DeleteTaskCommandHandler : IRequestHandler<DeleteTaskRequest, Unit>
     {
         _context = context;
     }
-    
-   public Task<Unit> Handle(DeleteTaskRequest request, CancellationToken cancellationToken)
-   {
-       _context.DeleteTask(request.TaskId);
-       _context.SaveChanges();
-       return Task.FromResult(new Unit()); 
-   }
+
+    public Task<Unit> Handle(DeleteTaskRequest request, CancellationToken cancellationToken)
+    {
+        _context.DeleteTask(request.TaskId);
+        _context.SaveChanges();
+        return Task.FromResult(new Unit());
+    }
 }

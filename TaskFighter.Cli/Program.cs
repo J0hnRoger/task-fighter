@@ -54,26 +54,6 @@ if (command is NotFoundRequest)
    return;
 }
 
-if (command is ListTaskRequest listTasksCommand)
-{
-    var result = await _mediator.Send(listTasksCommand);
-   
-    if (result.Project == "backlog")
-        AnsiConsole.MarkupLine($"[bold]Backlog[/]");
-    
-    else if (result.Day.HasValue)
-    {
-        AnsiConsole.MarkupLine($"[bold]Daily Todo: {result.Day.ToString()} - Status: {(result.IsOpened ? "" : "Fermé")}[/]");
-    }
-    
-    TaskFighterTable<TodoTask> table = new(result.Tasks, new List<string>()
-    {
-       "Id", "Name", "Status", "Project"  
-    });
-    AnsiConsole.Write(table.Table);
-    return;
-}
-
 if (command is PlanDayScheduleRequest planDayRequest)
 {
     var result = await _mediator.Send(planDayRequest);

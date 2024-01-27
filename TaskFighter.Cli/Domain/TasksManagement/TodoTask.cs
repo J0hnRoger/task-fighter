@@ -6,9 +6,7 @@ namespace TaskFighter.Domain.TasksManagement;
 
 public class TodoTask : Entity, ITableRenderable
 {
-    // Creation
     public string Name { get; set; }
-    public string Project { get; set; }
     public string Context { get; set; }
     public string Description { get; set; }
     public int Parent { get; set; }
@@ -19,8 +17,9 @@ public class TodoTask : Entity, ITableRenderable
     public int EstimateDuration { get; set; }
     public string Area { get; set; }
     public int Impact { get; set; }
+    public bool UnPlanned { get; set; } = false;
     
-    public List<string> Tags { get; set; }
+    public List<string> Tags { get; set; } = new();
     
     // Runtime Properties
     public TodoTaskStatus Status { get; set; } = TodoTaskStatus.BackLog;
@@ -49,7 +48,6 @@ public class TodoTask : Entity, ITableRenderable
             Id.ToString(),
             Name,
             Status?.Value ?? TodoTaskStatus.BackLog.Value,
-            Project,
             string.Join(", ", Tags),
             Context,
             GetAge(DateTime.Now),
@@ -102,7 +100,6 @@ public class TodoTask : Entity, ITableRenderable
         return new TodoTask()
         {
             Name = properties[0],
-            Project = project,
         };
     }
 }

@@ -12,7 +12,8 @@ public interface IFighterTaskContext
     public DailyTodoLists DailyTodoLists { get; } 
     public DailyTodo DailyTodo { get; }
     public DailyTodo Tomorrow { get; }
-   
+    string Context { get;}
+
     TodoTask GetTask(int requestTaskId);
     public TodoTask AddTask(TodoTask newTask);
     public TodoTask AddTaskInDailyTodo(TodoTask newTask);
@@ -28,8 +29,10 @@ public interface IFighterTaskContext
     void AddEvent(TodoEvent todoEvent);
     void UpdateEvent(TodoEvent todoEvent);
     void DeleteEvent(int eventId);
-    
+    void DeleteFromDailyTodo(TodoTask task, int todoListId);
+    void SetContext(string context);
     public void SaveChanges();
     public void BackUp();
     void RaiseDomainEvent(BaseEvent<Entity> domainEvent);
+    void AddTask(TodoTask newTask, DailyTodo todoList);
 }

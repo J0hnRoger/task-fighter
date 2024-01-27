@@ -53,7 +53,7 @@ public class EndDayRequestHandler : IRequestHandler<EndDayRequest, Unit>
             switch (choice)
             {
                 case "d":
-                    _context.Delete(task);
+                    _context.DeleteFromDailyTodo(task, currentTodoList.Id);
                     break;
                 case "m":
                     _context.Migrate(task);
@@ -90,7 +90,7 @@ public class EndDayRequestHandler : IRequestHandler<EndDayRequest, Unit>
     private void DisplayTask(TodoTask task)
     {
         var panel = new Panel(task.Name);
-        panel.Header = new PanelHeader(task.Project);
+        panel.Header = new PanelHeader(string.Join(",", task.Tags));
         panel.BorderStyle = new Style(Color.LightGoldenrod2_1);
         panel.Border = BoxBorder.Rounded;
         AnsiConsole.Write(panel);

@@ -4,23 +4,23 @@ using TaskFighter.Infrastructure.CommandParsing;
 
 namespace TaskFighter.Domain.TasksManagement.Requests;
 
-public record PlanTaskRequest : IRequest<List<TodoTask>>
+public record PlanDayRequest : IRequest<List<TodoTask>>
 {
-    public PlanTaskRequest(string value, Filters filters)
+    public PlanDayRequest(string value, Filters filters)
     {
     }
 }
 
-public class PlanTaskCommandHandler : IRequestHandler<PlanTaskRequest, List<TodoTask>>
+public class PlanDayCommandHandler : IRequestHandler<PlanDayRequest, List<TodoTask>>
 {
     private readonly IFighterTaskContext _context;
 
-    public PlanTaskCommandHandler(IFighterTaskContext context)
+    public PlanDayCommandHandler(IFighterTaskContext context)
     {
         _context = context;
     }
 
-    public Task<List<TodoTask>> Handle(PlanTaskRequest request, CancellationToken cancellationToken)
+    public Task<List<TodoTask>> Handle(PlanDayRequest request, CancellationToken cancellationToken)
     {
         if (_context.DailyTodoLists.HasOpenedDay)
         {

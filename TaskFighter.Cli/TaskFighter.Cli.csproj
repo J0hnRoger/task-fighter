@@ -29,11 +29,13 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Assets" />
-    </ItemGroup>
-
-    <ItemGroup>
       <None Update="Assets\clock-sounds.mp3">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Assets\todo-template.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Assets\backlog-template.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
     </ItemGroup>
