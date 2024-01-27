@@ -31,7 +31,7 @@ public class PlanDayCommandHandler : IRequestHandler<PlanDayRequest, List<TodoTa
         var dailyTasks = DisplayTasksAsChoices(allTasks);
         
         foreach (TodoTask task in dailyTasks)
-            _context.TackleToday(task);
+            _context.AddToTodoList(task, _context.DailyTodo);
         _context.SaveChanges();
         
         return Task.FromResult(allTasks);

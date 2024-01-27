@@ -13,7 +13,7 @@ public record ShowDayRequest : IRequest<Unit>
     public ShowDayRequest(string values, Filters filters)
     {
        // Special case for tomorrow 
-       if (filters.Tags.Contains("1")) 
+       if (filters.SpecialTags.Contains("1")) 
            Date = DateTime.Today.AddDays(1);
        else 
            Date = DateTime.Today;
@@ -44,7 +44,7 @@ public class ShowDayRequestHandler : IRequestHandler<ShowDayRequest, Unit>
         AnsiConsole.Write(new Markup($"[cadetblue]{dailyTodo.Date:d} - Status: {(dailyTodo.Opened ? "Opened" : "Closed")}[/]\n"));
         TaskFighterTable<TodoTask> table = new(dailyTodo.Tasks, new List<string>()
         {
-           "Id", "Name", "Status", "Project" , "Tags"
+           "Id", "Name", "Status", "Tags"
         });
         AnsiConsole.Write(table.Table);
     }

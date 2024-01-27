@@ -225,7 +225,7 @@ public class TaskFighterTests
         
         var task = fighterTasksContext.GetTask(taskId);
         
-        fighterTasksContext.TackleToday(task);
+        fighterTasksContext.AddToTodoList(task, fighterTasksContext.DailyTodo);
         
         task.Finish(DateTime.Now);
         fighterTasksContext.SaveChanges();

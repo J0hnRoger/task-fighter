@@ -24,11 +24,11 @@ public record AddTaskRequest : IRequest<TodoTask>
     }
 }
 
-public class CreateTaskCommandHandler : IRequestHandler<AddTaskRequest, TodoTask>
+public class AddTaskCommandHandler : IRequestHandler<AddTaskRequest, TodoTask>
 {
     private readonly IFighterTaskContext _context;
 
-    public CreateTaskCommandHandler(IFighterTaskContext context)
+    public AddTaskCommandHandler(IFighterTaskContext context)
     {
         _context = context;
     }

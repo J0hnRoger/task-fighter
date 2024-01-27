@@ -1,4 +1,5 @@
-﻿using TaskFighter.Infrastructure.Persistence;
+﻿using CSharpFunctionalExtensions;
+using TaskFighter.Infrastructure.Persistence;
 
 namespace TaskFighter.Domain.TasksManagement;
 
@@ -22,6 +23,14 @@ public class DailyTodoLists
     public List<DailyTodo> GetOpenedTodoLists(DateTime from)
     {
        return Days.Where(d => d.IsClosed == false && d.Date > from).ToList(); 
+    }
+    
+    public Result<DailyTodo> GetDailyTodoWithTask(int taskId)
+    {
+       var todo = Days.FirstOrDefault(d => d.Tasks.Any(t => t.Id == taskId));
+       if (todo == null)
+           return Result.Failure<DailyTodo>("No daily todo found with this task id");
+       return todo;
     }
 }
 

@@ -14,7 +14,7 @@ public class EventCommandTests
     public async Task CreateEvent_WithMinimalMandatoryProperties()
     {
         FighterTasksContext fighterTasksContext = TestHelpers.CreateTestContext();
-        var handler = new CreateTaskCommandHandler(fighterTasksContext);
+        var handler = new AddTaskCommandHandler(fighterTasksContext);
         var result = await handler.Handle(new AddTaskRequest("Test Task", new Filters("a:test"))
             , CancellationToken.None);
 
@@ -25,7 +25,7 @@ public class EventCommandTests
     public async Task CreateTask_WithModifiers()
     {
         FighterTasksContext fighterTasksContext = TestHelpers.CreateTestContext();
-        var handler = new CreateTaskCommandHandler(fighterTasksContext);
+        var handler = new AddTaskCommandHandler(fighterTasksContext);
         var result = await handler.Handle(new AddTaskRequest("Test Task", new Filters("a:test"))
             , CancellationToken.None);
 
@@ -36,7 +36,7 @@ public class EventCommandTests
     public async Task FinishTask_CreateFinishTaskEvent()
     {
         FighterTasksContext fighterTasksContext = TestHelpers.CreateTestContext();
-        var handler = new CreateTaskCommandHandler(fighterTasksContext);
+        var handler = new AddTaskCommandHandler(fighterTasksContext);
         
         var result = await handler.Handle(new AddTaskRequest("Test Task", new Filters("a:test"))
             , CancellationToken.None);
@@ -55,7 +55,7 @@ public class EventCommandTests
     public async Task ListTask_WithFilters_ReturnAdaptedView()
     {
         FighterTasksContext fighterTasksContext = TestHelpers.CreateTestContext();
-        var handler = new CreateTaskCommandHandler(fighterTasksContext);
+        var handler = new AddTaskCommandHandler(fighterTasksContext);
         var result = await handler.Handle(new AddTaskRequest("Test Task", new Filters("a:test"))
             , CancellationToken.None);
         result.Id.Should().BeGreaterThan(0);

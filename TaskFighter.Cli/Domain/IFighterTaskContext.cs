@@ -16,12 +16,11 @@ public interface IFighterTaskContext
 
     TodoTask GetTask(int requestTaskId);
     public TodoTask AddTask(TodoTask newTask);
-    public TodoTask AddTaskInDailyTodo(TodoTask newTask);
     void DeleteTask(int taskId);
     public void Update(TodoTask task);
     public void Delete(TodoTask task);
 
-    public void TackleToday(TodoTask task);
+    public void AddToTodoList(TodoTask task, DailyTodo todoList);
     public void BackToBacklog(TodoTask returningTask);
     public void CompleteTask(TodoTask completedTask);
     public void Migrate(TodoTask migrateTask);

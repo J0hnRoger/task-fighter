@@ -88,7 +88,7 @@ public class TodoTask : Entity, ITableRenderable
         return $"{Id} - {Name} - {Status}";
     }
 
-    public void TackleToday(DateTime today)
+    public void Tackle(DateTime today)
     {
         Status = TodoTaskStatus.Planned;
         // _domainEvents.Add(new TaskPlannedEvent(this, today));

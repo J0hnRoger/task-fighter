@@ -164,7 +164,7 @@ public class FighterTasksContext : IFighterTaskContext
         _backlog.Add(returningTask);
         SaveChanges();
     }
-
+    
     public void CompleteTask(TodoTask completedTask)
     {
         completedTask.Status = TodoTaskStatus.Complete;
@@ -178,14 +178,6 @@ public class FighterTasksContext : IFighterTaskContext
         if (String.IsNullOrWhiteSpace(newTask.Context))
             newTask.Context = _dbConfig.Context;
         newTask.Created = DateTime.Now;
-        return newTask;
-    }
-
-    public TodoTask AddTaskInDailyTodo(TodoTask newTask)
-    {
-        var task = CreateTask(newTask);
-        _currentDay.Tasks.Add(task);
-        _domainEvents.Add(TaskEvents.CreateTaskEvent(newTask));
         return newTask;
     }
 
@@ -207,12 +199,12 @@ public class FighterTasksContext : IFighterTaskContext
         return newTask;
     }
 
-    public void TackleToday(TodoTask task)
+    public void AddToTodoList(TodoTask task, DailyTodo todoList)
     {
-        task.TackleToday(_currentDay.Date);
+        task.Tackle(todoList.Date);
 
         _backlog.Remove(task);
-        _currentDay!.Tasks.Add(task);
+        todoList.Tasks.Add(task);
     }
 
     public void DeleteTask(int taskId)

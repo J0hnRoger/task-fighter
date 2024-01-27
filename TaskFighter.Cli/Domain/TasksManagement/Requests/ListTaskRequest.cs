@@ -39,6 +39,9 @@ public class ListTaskCommandHandler : IRequestHandler<ListTaskRequest>
         
         DisplayTodoList(tasks);
 
+        if (tasks.Count < 15)
+            return Task.FromResult(new Unit());
+        
         string filterOption = AnsiConsole.Ask<string>(
             "(f)ilter or (q)uit");
         
