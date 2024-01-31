@@ -30,14 +30,14 @@ public class BatchTaskCommandHandler : IRequestHandler<BatchTaskRequest, List<To
 
     public async Task<List<TodoTask>> Handle(BatchTaskRequest request, CancellationToken cancellationToken)
     {
-        string batchFile = Path.Combine(_baseDirectory + "/", request.BatchFile);
-        string batchContent = await File.ReadAllTextAsync(batchFile);
-        Batch batch = new Batch(batchContent);
+        string batchFilePath = Path.Combine(_baseDirectory + "/", request.BatchFile);
+        string batchContent = await File.ReadAllTextAsync(batchFilePath, cancellationToken);
+        BatchFile batchFile = new BatchFile(batchContent);
         
-        foreach (TodoTask todo in batch.Tasks)
+        foreach (TodoTask todo in batchFile.Tasks)
             _context.AddTask(todo);
         
         _context.SaveChanges();
-        return batch.Tasks;
+        return batchFile.Tasks;
     }
 }

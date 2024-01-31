@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Spectre.Console;
 using TaskFighter.Infrastructure.CommandParsing;
 using TaskFighter.Infrastructure.Persistence;
 
@@ -60,6 +61,12 @@ public class AddTaskCommandHandler : IRequestHandler<AddTaskRequest, TodoTask>
             _context.AddTask(task);
         }
         _context.SaveChanges();
+        DisplayTask(task);
         return Task.FromResult(task);
+    }
+
+    private void DisplayTask(TodoTask task)
+    {
+        AnsiConsole.Write($"[green]Task {task.Id} added to {_context.Context}[/]");
     }
 }

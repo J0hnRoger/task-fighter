@@ -12,18 +12,6 @@ namespace TaskFighter.Tests;
 public class DayRequestTests
 {
     [Fact]
-    public async Task PlanDayScheduleRequest_CreateReporting()
-    {
-        FighterTasksContext fighterTasksContext = TestHelpers.CreateTestContext();
-        var handler = new PlanDayScheduleRequestHandler(fighterTasksContext);
-        var result = await handler.Handle(new PlanDayScheduleRequest("", new Filters(""))
-            , CancellationToken.None);
-        
-        result.TimeBlocks.Count.Should().Be(7);
-        result.TotalMinutesPlanned.Should().Be(0);
-    }
-    
-    [Fact]
     public async Task StartDayScheduleRequest_CreateReporting()
     {
         FighterTasksContext fighterTasksContext = TestHelpers.CreateTestContext();

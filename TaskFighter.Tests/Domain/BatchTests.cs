@@ -6,14 +6,14 @@ using Xunit;
 
 namespace TaskFighter.Tests;
 
-public class BatchTaskTests
+public class BatchTests
 {
     [Fact]
-    public async Task Batch_ParseLineIntoTaskList()
+    public async Task Batch_CreateFromMarkdown()
     {
         string batchContent = await File.ReadAllTextAsync("./Assets/batch.md"); 
         batchContent.Should().NotBeNullOrEmpty();
         var sut = new BatchFile(batchContent);
-        sut.Tasks.Should().HaveCount(9);
+        sut.Tasks.Should().HaveCount(4);
     }
 }

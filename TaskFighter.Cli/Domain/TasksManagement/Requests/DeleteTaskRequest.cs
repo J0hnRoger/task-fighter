@@ -9,7 +9,8 @@ public record DeleteTaskRequest : IRequest<Unit>
 
     public DeleteTaskRequest(string value, Filters filter)
     {
-        TaskId = int.Parse(filter.Raw);
+        if (filter.Id.HasValue)
+            TaskId = filter.Id.Value;
     } 
     
     public override string ToString()
