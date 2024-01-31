@@ -22,10 +22,12 @@ public class ModifyDayRequestHandler : IRequestHandler<ModifyDayRequest>
 {
     private readonly IFighterTaskContext _context;
     private readonly string _baseDirectory;
+    private readonly ITextEditor _editor;
 
-    public ModifyDayRequestHandler(IFighterTaskContext context, TaskFighterConfig config)
+    public ModifyDayRequestHandler(IFighterTaskContext context, TaskFighterConfig config, ITextEditor editor)
     {
         _context = context;
+        _editor = editor;
         _baseDirectory = config.GetBasePath();  
     }
 
@@ -41,13 +43,7 @@ public class ModifyDayRequestHandler : IRequestHandler<ModifyDayRequest>
         
         await File.WriteAllTextAsync(exportPath, export.ToString(), cancellationToken);
         
-        var startInfo = new ProcessStartInfo
-        {
-            FileName = "cmd.exe", Arguments = $"/c nvim \"{exportPath}\"", UseShellExecute = true
-        };
-
-        Process.Start(startInfo);
-
+        _editor.Open(exportPath);
         return new Unit();
     }
 }
