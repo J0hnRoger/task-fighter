@@ -61,7 +61,6 @@ public class ListTaskCommandHandler : IRequestHandler<ListTaskRequest>
             "Id",
             "Name",
             "Status",
-            "Project",
             "Tags"
         });
         AnsiConsole.Write(table.Table);

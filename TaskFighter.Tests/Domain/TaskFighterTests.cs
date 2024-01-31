@@ -223,11 +223,12 @@ public class TaskFighterTests
         taskId.Should().BeGreaterThan(0);
         fighterTasksContext.SaveChanges();
         
-        var task = fighterTasksContext.GetTask(taskId);
+        var taskResult = fighterTasksContext.GetTask(taskId);
+        taskResult.IsSuccess.Should().BeTrue();
         
-        fighterTasksContext.AddToTodoList(task, fighterTasksContext.DailyTodo);
+        fighterTasksContext.AddToTodoList(taskResult.Value, fighterTasksContext.DailyTodo);
         
-        task.Finish(DateTime.Now);
+        taskResult.Value.Finish(DateTime.Now);
         fighterTasksContext.SaveChanges();
     }
     

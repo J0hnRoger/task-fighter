@@ -31,4 +31,9 @@ public class TaskFighterConfig
         int lastSlash = ConfigPath.LastIndexOf("/", StringComparison.Ordinal);
         return ConfigPath.Substring(0, lastSlash);
     }
+    
+    public string GetWorkingDirectory()
+    {
+        return Path.Combine(GetBasePath(), Context);
+    }
 }

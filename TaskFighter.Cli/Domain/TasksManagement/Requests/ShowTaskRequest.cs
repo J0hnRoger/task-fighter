@@ -5,68 +5,43 @@ using TaskFighter.Infrastructure.Persistence;
 
 namespace TaskFighter.Domain.TasksManagement.Requests;
 
-public record AddTaskRequest : IRequest<TodoTask>
+public record ShowTaskRequest : IRequest<TodoTask>
 {
-    public List<string> Tags { get; set; }
-    public DateTime? Target { get; set; }
-    public string Context { get; set; }
-    public string Name { get; set; }
+    public int Id { get; set; }
 
-    public AddTaskRequest(string serializedValue, Filters filters)
+    public ShowTaskRequest(string serializedValue, Filters filters)
     {
-        Tags = filters.Tags;
-        Target = filters.SpecialTags.Contains("1")
-            ? DateTime.Today.AddDays(1)
-            : filters.SpecialTags.Contains("0")
-                ? DateTime.Today
-                : null;
-
-        Name = serializedValue.Trim();
+        if (!filters.Id.HasValue)
+            throw new ApplicationException("Id is required to show a task");
+        Id = filters.Id.Value;
     }
 }
 
-public class AddTaskCommandHandler : IRequestHandler<AddTaskRequest, TodoTask>
+public class ShowTaskCommandHandler : IRequestHandler<ShowTaskRequest, TodoTask>
 {
     private readonly IFighterTaskContext _context;
+    private readonly ITextEditor _editor;
+    private readonly string _workingDirPath;
 
-    public AddTaskCommandHandler(IFighterTaskContext context)
+    public ShowTaskCommandHandler(IFighterTaskContext context, ITextEditor editor, TaskFighterConfig config)
     {
         _context = context;
+        _workingDirPath = config.GetWorkingDirectory(); 
+        _editor = editor;
     }
 
-    public Task<TodoTask> Handle(AddTaskRequest request, CancellationToken cancellationToken)
+    public Task<TodoTask> Handle(ShowTaskRequest request, CancellationToken cancellationToken)
     {
-        var task = new TodoTask()
-        {
-            Name = request.Name,
-            Context = request.Context,
-            Status = TodoTaskStatus.BackLog,
-            Tags = request.Tags
-        };
-
-        if (request.Target.HasValue)
-        {
-            var todoList = _context.DailyTodoLists.GetTodoList(request.Target.Value);
-            if (todoList == null)
-                throw new Exception($"No daily todo found for this date {request.Target:d}");
-            
-            if (todoList.Date == DateTime.Today && todoList.Opened)
-                task.UnPlanned = true;
-                    
-            task.Status = TodoTaskStatus.Planned;
-            _context.AddTask(task, todoList);
-        }
-        else
-        {
-            _context.AddTask(task);
-        }
-        _context.SaveChanges();
-        DisplayTask(task);
-        return Task.FromResult(task);
-    }
-
-    private void DisplayTask(TodoTask task)
-    {
-        AnsiConsole.Write($"[green]Task {task.Id} added to {_context.Context}[/]");
+        var task = _context.GetTask(request.Id);
+        if (task.IsFailure)
+            throw new ApplicationException("No task found with this id");
+        
+        string filePath = _workingDirPath + "/" + task.Value.Id + ".md";
+        var batchTask = new BatchFile(new List<TodoTask>() { task.Value });
+        File.WriteAllText(filePath, batchTask.ToString());
+        
+        _editor.Open(filePath);
+        
+        return Task.FromResult(task.Value);
     }
 }

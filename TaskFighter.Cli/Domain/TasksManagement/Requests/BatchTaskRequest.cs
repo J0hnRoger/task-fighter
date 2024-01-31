@@ -9,11 +9,11 @@ namespace TaskFighter.Domain.TasksManagement.Requests;
 // Crafting our project
 public record BatchTaskRequest : IRequest<List<TodoTask>>
 {
-    public string BatchFile { get; set; }
+    public string BatchFullPath { get; set; }
     
     public BatchTaskRequest(string value, Filters filter)
     {
-        BatchFile = value;
+        BatchFullPath = filter.Raw;
     }
 }
 
@@ -30,12 +30,25 @@ public class BatchTaskCommandHandler : IRequestHandler<BatchTaskRequest, List<To
 
     public async Task<List<TodoTask>> Handle(BatchTaskRequest request, CancellationToken cancellationToken)
     {
-        string batchFilePath = Path.Combine(_baseDirectory + "/", request.BatchFile);
-        string batchContent = await File.ReadAllTextAsync(batchFilePath, cancellationToken);
+        string batchContent = await File.ReadAllTextAsync(request.BatchFullPath, cancellationToken);
         BatchFile batchFile = new BatchFile(batchContent);
-        
+
         foreach (TodoTask todo in batchFile.Tasks)
-            _context.AddTask(todo);
+        {
+            if (todo.Id == 0)
+                _context.AddTask(todo);
+            else
+            {
+                var updatingTaskResult = _context.GetTask(todo.Id);
+                if (updatingTaskResult.IsSuccess)
+                {
+                    var updatingTask = updatingTaskResult.Value;
+                    updatingTask.Name = todo.Name;
+                    updatingTask.Tags = todo.Tags;
+                    // TODO
+                } 
+            }
+        }
         
         _context.SaveChanges();
         return batchFile.Tasks;

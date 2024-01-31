@@ -1,6 +1,8 @@
-﻿using TaskFighter.Domain.Common;
+﻿using CSharpFunctionalExtensions;
+using TaskFighter.Domain.Common;
 using TaskFighter.Domain.EventsManagement;
 using TaskFighter.Domain.TasksManagement;
+using Entity = TaskFighter.Domain.Common.Entity;
 
 namespace TaskFighter.Domain;
 
@@ -14,7 +16,7 @@ public interface IFighterTaskContext
     public DailyTodo Tomorrow { get; }
     string Context { get;}
 
-    TodoTask GetTask(int requestTaskId);
+    Result<TodoTask> GetTask(int requestTaskId);
     public TodoTask AddTask(TodoTask newTask);
     void DeleteTask(int taskId);
     public void Update(TodoTask task);

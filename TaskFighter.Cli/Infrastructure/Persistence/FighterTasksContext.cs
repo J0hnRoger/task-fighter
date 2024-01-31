@@ -1,9 +1,11 @@
 ﻿using System.Reflection;
+using CSharpFunctionalExtensions;
 using Newtonsoft.Json;
 using TaskFighter.Domain;
 using TaskFighter.Domain.Common;
 using TaskFighter.Domain.EventsManagement;
 using TaskFighter.Domain.TasksManagement;
+using Entity = TaskFighter.Domain.Common.Entity;
 
 namespace TaskFighter.Infrastructure.Persistence;
 
@@ -149,12 +151,22 @@ public class FighterTasksContext : IFighterTaskContext
         throw new NotImplementedException();
     }
 
-    public TodoTask GetTask(int taskId)
+    public Result<TodoTask> GetTask(int taskId)
     {
         var task = _backlog.FirstOrDefault(t => t.Id == taskId);
-        if (task == null)
-            throw new Exception($"Task {taskId} doesn't exists");
-        return task;
+        if (task != null)
+            return task;
+
+        task = _currentDay.Tasks.Find(t => t.Id == taskId);
+        if (task != null)
+        {
+            return task;
+        }
+
+        var taskResult = DailyTodoLists.GetTodoTask(taskId);
+        if (taskResult.IsSuccess)
+            return taskResult.Value;
+        return Result.Failure<TodoTask>(taskResult.Error);
     }
 
     public void BackToBacklog(TodoTask returningTask)

@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using TaskFighter.Domain;
 using TaskFighter.Infrastructure.CommandParsing;
 using TaskFighter.Infrastructure.Configuration;
+using TaskFighter.Infrastructure.EditorTool;
 using TaskFighter.Infrastructure.Persistence;
 
 AnsiConsole.MarkupLine("[underline red]Be SOLID[/]");
@@ -30,6 +31,7 @@ ServiceProvider ConfigureServices()
         .AddSingleton<TaskFighterConfig>(p => config)
         .AddSingleton(p =>  new CommandParser(allDomainRequestTypes))
         .AddSingleton<IFighterTaskContext>(prodiver => new FighterTasksContext(config))
+        .AddSingleton<ITextEditor>(new TextEditor())
         .AddMediatR(typeof(ShowConfigRequestHandler))
         .BuildServiceProvider();
 }

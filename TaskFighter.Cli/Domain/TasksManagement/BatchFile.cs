@@ -40,7 +40,7 @@ public class BatchFile
     public BatchFile(string batchContent)
     {
         Content = batchContent;
-        ParseContent();
+        Tasks = ParseContent();
     }
 
     private List<TodoTask> ParseContent()
@@ -57,16 +57,25 @@ public class BatchFile
                 continue;
            
             string taskContent = taskLine.Split("- ")[1];
-            int.TryParse(taskContent.Split(" ")[0], out int taskId);
-
-            var descriptionAndTags = taskLine.Substring("- ".Length + taskId.ToString().Length)
+            int taskIdLength = 0;
+            if (int.TryParse(taskContent.Split(" ")[0], out int taskId) 
+                && taskId > 0)
+                taskIdLength = taskId.ToString().Length;
+    
+            var descriptionAndTags = taskLine.Substring("- ".Length + taskIdLength)
                 .Trim();
-            var tagsContent = descriptionAndTags.Split(" - ")[1];
+            var tagsContent = descriptionAndTags.Split(" - ");
+           var tags = new List<string>(); 
+            if (tagsContent.Length > 1)
+            {
+                string tagsStr = tagsContent[1];
+                tags = tagsStr.Split(new[] {TAG_MARK}, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(tag => tag.Trim()).ToList();
+            }
+            
             var description = descriptionAndTags.Split(" - ")[0];
-            var tags = tagsContent.Split(new[] {TAG_MARK}, StringSplitOptions.RemoveEmptyEntries)
-                .Select(tag => tag.Trim()).ToList();
 
-            tasks.Add(new TodoTask() {Id = taskId, Name = description, Tags = tags});
+            tasks.Add(new TodoTask() { Id = taskId, Name = description, Tags = tags });
         }
 
         return tasks;
