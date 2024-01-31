@@ -35,7 +35,7 @@ namespace TaskFighter.Infrastructure.Renderer;
 
             foreach (var row in iterables)
             {
-                _table.AddRow(row.GetFields().Take(fields.Count).ToArray());
+                _table.AddRow(row.GetFieldValues(fields));
             }
         }
     }

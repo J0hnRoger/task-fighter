@@ -11,8 +11,8 @@ public class TimeBlockRenderer : ITableRenderable
     {
         TimeBlock = timeBlock;
     }
-    
-    public string[] GetFields()
+
+    public string[] GetFieldValues(List<string> fields)
     {
             return new[]
             {

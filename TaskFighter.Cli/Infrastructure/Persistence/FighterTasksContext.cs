@@ -252,7 +252,7 @@ public class FighterTasksContext : IFighterTaskContext
     public void Delete(TodoTask task)
     {
     }
-
+    
     void IFighterTaskContext.AddEvent(TodoEvent todoEvent)
     {
         throw new NotImplementedException();

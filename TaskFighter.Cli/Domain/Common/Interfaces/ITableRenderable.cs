@@ -2,5 +2,5 @@
 
 public interface ITableRenderable
 {
-    public string[] GetFields();
+    public string[] GetFieldValues(List<string> fields);
 }

@@ -20,8 +20,8 @@ public class TimeBlock : ITableRenderable
     {
         Task = task;
     }
-    
-    public string[] GetFields()
+
+    public string[] GetFieldValues(List<string> fields)
     {
         return new string[]
         {
