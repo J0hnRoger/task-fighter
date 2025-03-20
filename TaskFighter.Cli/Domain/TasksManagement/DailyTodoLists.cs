@@ -43,6 +43,11 @@ public class DailyTodoLists
         }
         return Result.Failure<TodoTask>("Task not found in any daily todo");
     }
+
+    public List<DailyTodo> GetTodoLists(DateTime from)
+    {
+        return Days.Where(d => d.Date > from).ToList();
+    }
 }
 
 public class DailyTodo

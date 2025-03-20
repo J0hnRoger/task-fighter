@@ -9,10 +9,12 @@ namespace TaskFighter.Domain.DayScheduling.Requests;
 public record ListDayRequest : IRequest<Unit>
 {
     public DateTime From { get; set; } = DateTime.MinValue;
-
+    public bool OpenedOnly { get; set; }
+    
     public ListDayRequest(string values, Filters filters)
     {
-        if (filters.Raw.Contains("week"))
+        OpenedOnly = (filters.SpecialTags.Contains("all")) ? false : true;
+        if (filters.SpecialTags.Contains("week"))
             From = DateUtilities.GetFirstDayOfWeek();
     }
 }
@@ -28,15 +30,17 @@ public class ListDayRequestHandler : IRequestHandler<ListDayRequest, Unit>
 
     public Task<Unit> Handle(ListDayRequest request, CancellationToken cancellationToken)
     {
-        var openedTodoLists = _context.DailyTodoLists.GetOpenedTodoLists(request.From);
+        var todoLists = (request.OpenedOnly)
+            ? _context.DailyTodoLists.GetOpenedTodoLists(request.From)
+            : _context.DailyTodoLists.GetTodoLists(request.From);
 
-        if (!openedTodoLists.Any())
+        if (!todoLists.Any())
         {
             AnsiConsole.WriteLine("No Opened TodoLists");
             return Task.FromResult(new Unit());
         }
 
-        DisplayTodoLists(openedTodoLists);
+        DisplayTodoLists(todoLists);
 
         return Task.FromResult(new Unit());
     }

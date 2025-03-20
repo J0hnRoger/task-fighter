@@ -2,5 +2,5 @@
 
 public class Tags
 {
-    public static List<string> SpecialTags = new() { "0", "1", "all", "B" };
+    public static List<string> SpecialTags = new() { "0", "1", "all", "B", "week" };
 }
